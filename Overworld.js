@@ -3,31 +3,36 @@ class Overworld{
         this.element = config.element;
         this.canvas = this.element.querySelector(".game-canvas");
         this.ctx = this.canvas.getContext("2d");
+        this.map = null;
+    }
+
+    startGameLoop(){
+        const step = () => {
+
+            //Clear off canvas before drawing new layers
+            this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height);
+
+            //draw lower layer
+            this.map.drawLowerImage(this.ctx);
+
+            //draw game objects
+            Object.values(this.map.gameObjects).forEach(object =>{
+                object.sprite.draw(this.ctx);
+            })
+
+            //drap upper layer
+            this.map.drawUppererImage(this.ctx)
+
+            requestAnimationFrame(()=>{
+                step();
+            })
+        }
+        step();
     }
 
     init(){
-        const image = new Image();
-        image.onload = () =>{
-            this.ctx.drawImage(image,0,0)
-        }
-        image.src = "/img/maps/ville1.png";
-
-        //Placer des gameObjects
-        const hero = new GameObject({
-            x:5,
-            y:6,
-        });
-
-        const player2 = new GameObject({
-            x:3,
-            y:4,
-            src: "/img/personages/perso2.png"
-        });
-
-        setTimeout(()=>{
-            hero.sprite.draw(this.ctx);
-            player2.sprite.draw(this.ctx);
-        },200);
+        this.map = new OverWorldMap(window.OverWorldMaps.Centre_Pokemon);
+        this.startGameLoop();
     }
 
 }
