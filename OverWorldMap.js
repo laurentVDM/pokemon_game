@@ -4,4 +4,5 @@ class OverWorldMap{
         this.lowerSrc = config.lowerSrc;
         this.upperSrc = config.upperSrc;
     }
+    salut
 }
