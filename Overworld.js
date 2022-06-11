@@ -34,7 +34,7 @@ class Overworld {
     }
 
     init() {
-        this.map = new OverWorldMap(window.OverWorldMaps.Centre_Pokemon);
+        this.map = new OverWorldMap(window.OverWorldMaps.DemoRoom);
 
         this.directionInput = new DirectionInput();
         this.directionInput.init();
