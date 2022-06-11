@@ -14,31 +14,51 @@ class Person extends GameObject {
     }
 
     update(state) {
-        this.uppdatePosition();
-        this.updateSprite(state);
-
-        if(this.isPlayerControlled && this.movingProgressRemaining === 0 && state.arrow){
-            this.direction = state.arrow;
-            this.movingProgressRemaining = 16;
-        }
-    }
-
-    uppdatePosition() {
         if (this.movingProgressRemaining > 0) {
-            const [property, change] = this.directionUpdate[this.direction];
-            this[property] += change;
-            this.movingProgressRemaining -= 1;
+            this.updatePosition();            
+        }else {
+            //more cases for starting walking will come here
+
+            //case: keyboard ready and arrow is pressed
+            if(this.isPlayerControlled && state.arrow){
+                this.startBehavior(state, {
+                    type: "walk",
+                    direction: state.arrow
+                })
+            }            
+            this.updateSprite();     
         }
+
+                
     }
 
-    updateSprite(state) {
-        if(this.isPlayerControlled && this.movingProgressRemaining === 0 && !state.arrow){
-            this.sprite.setAnimation("idle-"+this.direction);
-            return;
+    startBehavior(state, behavior) {
+        //set character direction to whatever behavior has
+        this.direction = behavior.direction;
+        if(behavior.type === "walk") {
+            //stop if space is taken
+            if(state.map.isSpaceTaken(this.x,this.y,this.direction)){
+                return;
+            };
         }
+        //ready to walk
+        state.map.moveWall(this.x, this.y, this.direction);     //sets wall in our future position
+        this.movingProgressRemaining = 16;
+    }
+
+    updatePosition() {
+        const [property, change] = this.directionUpdate[this.direction];
+        this[property] += change;
+        this.movingProgressRemaining -= 1;
+    }
+
+    updateSprite() {
         //if player is moving
         if(this.movingProgressRemaining >0) {
             this.sprite.setAnimation("walk-"+this.direction);
+            return;
         }
+        this.sprite.setAnimation("idle-"+this.direction);
+        
     }
 }

@@ -15,9 +15,11 @@ class Overworld {
             //Establish the camera person
             const cameraPerson = this.map.gameObjects.hero;
 
+            //update all objects
             Object.values(this.map.gameObjects).forEach(object => {
                 object.update( {
-                    arrow: this.directionInput.direction
+                    arrow: this.directionInput.direction,
+                    map: this.map,
                 });
             })
 
@@ -42,6 +44,7 @@ class Overworld {
 
     init() {
         this.map = new OverWorldMap(window.OverWorldMaps.Ville1);
+        this.map.mountObjects();        
 
         this.directionInput = new DirectionInput();
         this.directionInput.init();

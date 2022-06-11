@@ -102,3 +102,13 @@ window.addEventListener('keyup', (event) => {
             break
     }
 })
+
+
+
+// makeCollisionMap(mapWidth, mapname) {
+//     let collisionMap=[];
+//     for(let i=0; i<mapname.length; i+=mapWidth){
+//         collisionMap.push(mapname.slice(i, i+mapWidth))
+//     }
+//     return collisionMap;
+// }
