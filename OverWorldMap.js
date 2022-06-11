@@ -9,18 +9,26 @@ class OverWorldMap {
         this.upperImage.src = config.upperSrc;
     }
 
-    drawLowerImage(ctx) {
-        ctx.drawImage(this.lowerImage,0,0)
+    drawLowerImage(ctx, cameraPerson) {
+        ctx.drawImage(
+            this.lowerImage,
+            utils.withGrid(10.5)- cameraPerson.x,
+            utils.withGrid(5)- cameraPerson.y
+        )
     }
-    drawUppererImage(ctx) {
-        ctx.drawImage(this.upperImage,0,0)
+    drawUpperImage(ctx, cameraPerson) {
+        ctx.drawImage(
+            this.upperImage,
+            utils.withGrid(10.5)- cameraPerson.x,
+            utils.withGrid(5)- cameraPerson.y
+        )
     }
 }
 
 window.OverWorldMaps = {
     DemoRoom: {
-        lowerSrc: "img/maps/ville1_lower.png",
-        upperSrc: "img/maps/ville1_upper.png",
+        lowerSrc: "img/maps/demoroom_lower.png",
+        upperSrc: "img/maps/demoroom_upper.png",
         gameObjects: {
             hero: new Person( {
                 isPlayerControlled: true,
@@ -29,7 +37,7 @@ window.OverWorldMaps = {
             }),
             npc1:new Person( {
                 x: utils.withGrid(4),
-                y: utils.withGrid(8),
+                y: utils.withGrid(5),
                 src: "img/personages/perso2.png"
             })
         }
@@ -50,4 +58,20 @@ window.OverWorldMaps = {
             })
         }
     },
+    Ville1: {
+        lowerSrc: "img/maps/ville1_lower.png",
+        upperSrc: "img/maps/ville1_upper.png",
+        gameObjects: {
+            hero: new Person( {
+                isPlayerControlled: true,
+                x: utils.withGrid(11),
+                y: utils.withGrid(20)
+            }),
+            npc1:new Person( {
+                x: utils.withGrid(20),
+                y: utils.withGrid(18),
+                src: "img/personages/perso2.png"
+            })
+        }
+    }
 }

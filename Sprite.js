@@ -57,9 +57,9 @@ class Sprite {
         }
     }
 
-    draw(ctx) {
-        const x = this.gameObject.x;
-        const y = this.gameObject.y;
+    draw(ctx, cameraPerson) {
+        const x = this.gameObject.x - 8 + utils.withGrid(10.5) - cameraPerson.x;
+        const y = this.gameObject.y - 2 + utils.withGrid(5) - cameraPerson.y;
 
         const [frameX, frameY] = this.frame;
 
