@@ -1,5 +1,5 @@
-class Sprite{
-    constructor(config){
+class Sprite {
+    constructor(config) {
 
         //setup images
         this.image = new Image();
@@ -21,9 +21,9 @@ class Sprite{
         this.gameObject = config.gameObject;
     }
 
-    draw(ctx){
-        const x = this.gameObject.x * 16;
-        const y = this.gameObject.y * 16;
+    draw(ctx) {
+        const x = this.gameObject.x;
+        const y = this.gameObject.y;
 
         this.isLoaded && ctx.drawImage(
             this.image,

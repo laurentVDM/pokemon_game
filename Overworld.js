@@ -1,12 +1,12 @@
-class Overworld{
-    constructor(config){
+class Overworld {
+    constructor(config) {
         this.element = config.element;
         this.canvas = this.element.querySelector(".game-canvas");
         this.ctx = this.canvas.getContext("2d");
         this.map = null;
     }
 
-    startGameLoop(){
+    startGameLoop() {
         const step = () => {
 
             //Clear off canvas before drawing new layers
@@ -16,22 +16,30 @@ class Overworld{
             this.map.drawLowerImage(this.ctx);
 
             //draw game objects
-            Object.values(this.map.gameObjects).forEach(object =>{
+            Object.values(this.map.gameObjects).forEach(object => {
+                object.update( {
+                    arrow: this.directionInput.direction
+                });
                 object.sprite.draw(this.ctx);
             })
 
-            //drap upper layer
+            //draw upper layer
             this.map.drawUppererImage(this.ctx)
 
-            requestAnimationFrame(()=>{
+            requestAnimationFrame(() => {
                 step();
             })
         }
         step();
     }
 
-    init(){
+    init() {
         this.map = new OverWorldMap(window.OverWorldMaps.Centre_Pokemon);
+
+        this.directionInput = new DirectionInput();
+        this.directionInput.init();
+        this.directionInput.direction; //up right left down
+
         this.startGameLoop();
     }
 

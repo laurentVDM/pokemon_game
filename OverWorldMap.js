@@ -1,5 +1,5 @@
-class OverWorldMap{
-    constructor(config){
+class OverWorldMap {
+    constructor(config) {
         this.gameObjects = config.gameObjects;
 
         this.lowerImage = new Image();
@@ -9,41 +9,43 @@ class OverWorldMap{
         this.upperImage.src = config.upperSrc;
     }
 
-    drawLowerImage(ctx){
+    drawLowerImage(ctx) {
         ctx.drawImage(this.lowerImage,0,0)
     }
-    drawUppererImage(ctx){
+    drawUppererImage(ctx) {
         ctx.drawImage(this.upperImage,0,0)
     }
 }
 
 window.OverWorldMaps = {
-    DemoRoom:{
+    DemoRoom: {
         lowerSrc: "img/maps/ville1_lower.png",
         upperSrc: "img/maps/ville1_upper.png",
-        gameObjects:{
-            hero: new GameObject({
-                x:5,
-                y:6
+        gameObjects: {
+            hero: new Person( {
+                isPlayerControlled: true,
+                x: utils.withGrid(5),
+                y: utils.withGrid(6)
             }),
-            npc1:new GameObject({
-                x:4,
-                y:8,
+            npc1:new Person( {
+                x: utils.withGrid(4),
+                y: utils.withGrid(8),
                 src: "img/personages/perso2.png"
             })
         }
     },
-    Centre_Pokemon:{
+    Centre_Pokemon: {
         lowerSrc: "img/maps/centrepokemonLower.png",
         upperSrc: "img/maps/centrepokemonUpper.png",
         gameObjects:{
-            hero: new GameObject({
-                x:5,
-                y:6
+            hero: new Person( {                
+                isPlayerControlled: true,
+                x: utils.withGrid(5),
+                y: utils.withGrid(6)
             }),
-            infirmiere: new GameObject({
-                x:10,
-                y:3,
+            infirmiere: new Person( {
+                x: utils.withGrid(10),
+                y: utils.withGrid(3),
                 src: "img/personages/infirmiere.png"
             })
         }
