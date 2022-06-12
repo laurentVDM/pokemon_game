@@ -8,6 +8,8 @@ class OverWorldMap {
 
         this.upperImage = new Image();
         this.upperImage.src = config.upperSrc;
+
+        this.isCutscenePlaying = false;
     }
 
     drawLowerImage(ctx, cameraPerson) {
@@ -31,12 +33,34 @@ class OverWorldMap {
     }
 
     mountObjects() {
-        Object.values(this.gameObjects).forEach(o => {
+        Object.keys(this.gameObjects).forEach(key => {
+
+            let object = this.gameObjects[key];
+            object.id = key;
+
             //TODO : determine if this object should actually mount
-            o.mount(this);
+            object.mount(this);
         })
     }
 
+    async startCutScene(events) {
+        console.log(events);
+        this.isCutscenePlaying = true;
+
+        //start loop of async events
+        //await each one
+        for(let i=0; i<events.length; i++) {
+            const eventHandler = new OverWorldEvent({
+                event: events[i],
+                map: this,
+            })
+            await eventHandler.init();
+        }
+
+        this.isCutscenePlaying = false;
+    }
+
+    //wall code
     addWall(x,y) {
         this.walls[`${x},${y}`] = true;
     }
@@ -94,8 +118,24 @@ window.OverWorldMaps = {
             }),
             npc1:new Person( {
                 x: utils.withGrid(20),
-                y: utils.withGrid(18),
-                src: "img/personages/perso2.png"
+                y: utils.withGrid(19),
+                src: "img/personages/perso2.png",
+                behaviorLoop: [
+                    { type: "stand", direction: "down", time: 1200},
+                    { type: "stand", direction: "right", time: 1200},
+                ]
+            }),
+            infirmiere: new Person( {
+                x: utils.withGrid(30),
+                y: utils.withGrid(19),
+                //src: "img/personages/infirmiere.png",
+                behaviorLoop: [
+                    { type: "walk", direction: "left"},
+                    { type: "stand", direction: "up", time: 800},
+                    { type: "walk", direction: "up"},
+                    { type: "walk", direction: "right"},
+                    { type: "walk", direction: "down"},
+                ]
             })
         },
         walls: {

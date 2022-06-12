@@ -18,15 +18,17 @@ class Person extends GameObject {
             this.updatePosition();            
         }else {
             //more cases for starting walking will come here
+            //
+            //
 
             //case: keyboard ready and arrow is pressed
-            if(this.isPlayerControlled && state.arrow){
+            if(!state.map.isCutscenePlaying && this.isPlayerControlled && state.arrow){
                 this.startBehavior(state, {
                     type: "walk",
                     direction: state.arrow
                 })
             }            
-            this.updateSprite();     
+            this.updateSprite(state);     
         }
 
                 
@@ -38,18 +40,39 @@ class Person extends GameObject {
         if(behavior.type === "walk") {
             //stop if space is taken
             if(state.map.isSpaceTaken(this.x,this.y,this.direction)){
+
+                behavior.retry && setTimeout(() => {
+                    this.startBehavior(state,behavior)
+                }, 10);
+
                 return;
             };
+            //ready to walk
+            state.map.moveWall(this.x, this.y, this.direction);     //sets wall in our future position
+            this.movingProgressRemaining = 16;
+            this.updateSprite(state);
+        }        
+
+        if(behavior.type === "stand"){
+            setTimeout(() => {
+                utils.emitEvent("PersonStandComplete",{
+                    whoId: this.id
+                })
+            }, behavior.time)
         }
-        //ready to walk
-        state.map.moveWall(this.x, this.y, this.direction);     //sets wall in our future position
-        this.movingProgressRemaining = 16;
     }
 
     updatePosition() {
         const [property, change] = this.directionUpdate[this.direction];
         this[property] += change;
         this.movingProgressRemaining -= 1;
+
+        if(this.movingProgressRemaining === 0) {
+            //walk is finished
+            utils.emitEvent("PersonWalkingComplete", {
+                whoId: this.id
+            })
+        }
     }
 
     updateSprite() {
