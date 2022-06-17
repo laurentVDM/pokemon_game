@@ -58,6 +58,20 @@ class OverWorldMap {
         }
 
         this.isCutscenePlaying = false;
+
+        //reset npc to do their idle behavior
+        Object.values(this.gameObjects).forEach(object => object.doBehaviorEvent(this));
+    }
+
+    checkForActionCutScene() {
+        const hero = this.gameObjects["hero"];
+        const nextCoords = utils.nextPosition(hero.x, hero.y, hero.direction);
+        const match = Object.values(this.gameObjects).find(object => {
+            return `${object.x},${object.y}` === `${nextCoords.x},${nextCoords.y}`
+        })
+        if(!this.isCutscenePlaying && match && match.talking.length) {
+            this.startCutScene(match.talking[0].events)
+        }
     }
 
     //wall code
@@ -135,6 +149,14 @@ window.OverWorldMaps = {
                     { type: "walk", direction: "up"},
                     { type: "walk", direction: "right"},
                     { type: "walk", direction: "down"},
+                ],
+                talking: [
+                    {
+                        events: [
+                            {type: "textMessage", text: "Bonjour, je veux faire un combat"},
+                            {type: "textMessage", text: "Alors, que le meilleur gagne!"}
+                        ]
+                    }
                 ]
             })
         },

@@ -43,9 +43,18 @@ class Overworld {
         step();
     }
 
+    bindActionInput() {
+        new KeyPressListner("Space", () => {
+            //is there a person here to talk to?
+            this.map.checkForActionCutScene()
+        })
+    }
+
     init() {
         this.map = new OverWorldMap(window.OverWorldMaps.Ville1);
-        this.map.mountObjects();        
+        this.map.mountObjects();      
+        
+        this.bindActionInput();
 
         this.directionInput = new DirectionInput();
         this.directionInput.init();
@@ -54,6 +63,7 @@ class Overworld {
         this.startGameLoop();
 
         this.map.startCutScene([
+            
             { who: "hero", type: "walk", direction: "down"},
             { who: "npc1", type: "walk", direction: "down"},
             { who: "npc1", type: "walk", direction: "left"},
@@ -66,6 +76,7 @@ class Overworld {
             { who: "npc1", type: "walk", direction: "left"},
             { who: "npc1", type: "walk", direction: "left"},
             { who: "npc1", type: "stand", direction: "down"},
+            {type: "textMessage", text:"Maintenant c'est moi qui decide"}
         ])
     }
 
