@@ -1,6 +1,9 @@
 class OverWorldMap {
     constructor(config) {
+        this.overworld = null;
         this.gameObjects = config.gameObjects;
+        this.cutSceneSpaces = config.cutSceneSpaces || {};
+
         this.walls = config.walls || {};
 
         this.lowerImage = new Image();
@@ -63,6 +66,14 @@ class OverWorldMap {
         Object.values(this.gameObjects).forEach(object => object.doBehaviorEvent(this));
     }
 
+    checkForFootstepCutScene() {
+        const hero = this.gameObjects["hero"];
+        const match = this.cutSceneSpaces[`${hero.x},${hero.y}`];
+        if (!this.isCutscenePlaying && match) {
+            this.startCutScene( match[0].events) 
+        }
+    }
+
     checkForActionCutScene() {
         const hero = this.gameObjects["hero"];
         const nextCoords = utils.nextPosition(hero.x, hero.y, hero.direction);
@@ -88,7 +99,7 @@ class OverWorldMap {
     }
 }
 
-window.OverWorldMaps = {
+window.OverworldMaps = {
     DemoRoom: {
         lowerSrc: "img/maps/demoroom_lower.png",
         upperSrc: "img/maps/demoroom_upper.png",
@@ -117,7 +128,14 @@ window.OverWorldMaps = {
             infirmiere: new Person( {
                 x: utils.withGrid(10),
                 y: utils.withGrid(3),
-                src: "img/personages/infirmiere.png"
+                src: "img/personages/infirmiere.png",
+                talking: [
+                    {
+                        events: [
+                            {type: "textMessage", text: "salut c booba", faceHero:"infirmiere"},
+                        ]
+                    }
+                ],
             })
         }
     },
@@ -131,7 +149,7 @@ window.OverWorldMaps = {
                 y: utils.withGrid(20)
             }),
             npc1:new Person( {
-                x: utils.withGrid(20),
+                x: utils.withGrid(22),
                 y: utils.withGrid(19),
                 src: "img/personages/perso2.png",
                 behaviorLoop: [
@@ -153,17 +171,33 @@ window.OverWorldMaps = {
                 talking: [
                     {
                         events: [
-                            {type: "textMessage", text: "Bonjour, je veux faire un combat"},
+                            {type: "textMessage", text: "Bonjour, je veux faire un combat", faceHero:"infirmiere"},
                             {type: "textMessage", text: "Alors, que le meilleur gagne!"}
                         ]
                     }
                 ]
             })
         },
-        walls: {
-            
-            [utils.asGridCoord(11,19)] : true,
-            
+        walls: {            
+            [utils.asGridCoord(11,19)] : true,            
+        },
+        cutSceneSpaces: {
+            [utils.asGridCoord(11,20)] : [
+                {
+                    events: [
+                        {who: "npc1", type:"stand", direction: "left"},
+                        {type:"textMessage", text: "va voir le centre pokemon"},
+                        {who: "hero", type:"walk", direction: "down"}
+                    ]
+                }    
+            ],
+            [utils.asGridCoord(37,19)] : [
+                {
+                    events: [
+                        {type: "changeMap", map: "Centre_Pokemon"},
+                    ]
+                }
+            ]
         }
 
     }
