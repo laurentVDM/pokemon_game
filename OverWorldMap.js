@@ -157,7 +157,7 @@ window.OverworldMaps = {
                     { type: "stand", direction: "right", time: 1200},
                 ]
             }),
-            infirmiere: new Person( {
+            npc2: new Person( {
                 x: utils.withGrid(30),
                 y: utils.withGrid(19),
                 //src: "img/personages/infirmiere.png",
@@ -171,7 +171,7 @@ window.OverworldMaps = {
                 talking: [
                     {
                         events: [
-                            {type: "textMessage", text: "Bonjour, je veux faire un combat", faceHero:"infirmiere"},
+                            {type: "textMessage", text: "Bonjour, je veux faire un combat", faceHero:"npc2"},
                             {type: "textMessage", text: "Alors, que le meilleur gagne!"}
                         ]
                     }
