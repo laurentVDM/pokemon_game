@@ -93,6 +93,7 @@ class Overworld {
             // { who: "npc1", type: "stand", direction: "down"},
             //{type: "textMessage", text:"Maintenant c'est moi qui decide"}
             //{type: "changeMap", map: "Centre_Pokemon"}
+            { type: "battle" }
         ])
     }
 

@@ -1,0 +1,140 @@
+.Combatant {
+  width: 110px;
+  height: 40px;
+  background: url("/img/maps/hp_bar.png") no-repeat no-repeat;
+  position:absolute;
+}
+
+.Battle .Combatant {
+  transform: scale(1);
+}
+.Battle .Combatant[data-active="false"] {
+  opacity: 0;
+}
+.Battle .Combatant[data-active="true"] {
+  opacity: 1;
+}
+
+.Combatant[data-team="player"] {
+  right: 0px;
+  bottom: 40px;
+}
+.Combatant[data-team="enemy"] {  
+  left: 0px;
+  top: 25px;
+}
+
+.Combatant_character_crop {
+  position: absolute;
+  bottom: 1px;
+  left:3px;
+  width: 22px;
+  height: 12px;
+  overflow:hidden;
+}
+.Combatant_character {
+  display:block;
+  position: absolute;
+  left: -11px;
+  bottom: -7px;
+}
+.Battle .Combatant_character_crop {
+  display:none;
+}
+
+.Combatant_name {
+  position: absolute;
+  left: 17px;
+  top: 7px;
+  white-space: nowrap;
+  /*background: var(--menu-font-color);*/
+  color: black;
+  font-size: 8px; /*This is only so small because the component is scaled 2x in battle which is weird */
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+.Combatant_type {
+  position: absolute;
+  left: 3px;
+  top: -2px;
+  width: 16px;
+  height: 16px;
+}
+
+.Combatant_hp {
+  position: absolute;
+  left: 50px;
+  top: 24px;  
+  white-space: nowrap;
+  color: black;
+  font-size: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+.Combatant_life-container {
+  position: absolute;
+  left:47px;
+  top:19px;
+  width: 52px;
+  height: 3px;
+}
+.Combatant_life-container > rect {
+  transition: width 0.2s;
+}
+
+.Combatant_xp-container {
+  position: absolute;
+  left:33px;
+  top:35px;
+  width: 64px;
+  height: 2px;
+}
+.Combatant_level {
+  position: absolute;
+  font-size: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+  right: 11px;
+  top: 7px;
+  /*background: #F8C594;*/
+  /*border: 1px solid #A48465;*/
+  margin: 0;
+}
+
+.Combatant_status {
+  position: absolute;
+  font-size: 5px;
+  left: 47px;
+  bottom: -3px;
+  padding-left: 2px;
+  padding-right: 2px;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  margin: 0;
+}
+.Combatant_status[data-status="saucy"] {
+  color: red;
+}
+.Combatant_status[data-status="clumsy"] {
+  background: #582a79;
+}
+
+.Pizza {
+  position: absolute;
+  transform: scale(1.5);
+  /*background: url(/images/characters/pizzas/pizza-shadow.png) no-repeat no-repeat;*/
+}
+.Pizza[data-team="player"] {
+  bottom: 25px;
+  left: 35px;
+}
+.Pizza[data-team="enemy"] {
+  top: 20px;
+  right: 20px;
+}
+.Pizza[data-active="false"] {
+  opacity:0;
+}
+.Pizza[data-active="true"] {
+  opacity:1;
+}
