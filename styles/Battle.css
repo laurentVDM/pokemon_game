@@ -9,11 +9,19 @@
   image-rendering: pixelated;
 }
 
-.Battle_hero, .Battle_enemy {
+.Battle_hero {
   position: absolute;
-  transform: scale(2);
-  width: 32px;
-  height: 32px;
+  transform: scale(1);
+  /*taille du sprite du hero*/
+  width: 62px;  
+  height: 50px;
+}
+
+.Battle_enemy {
+  position: absolute;
+  transform: scale(1);
+  width: 64px;
+  height: 64px;
   overflow: hidden;
   /*background: url(/images/characters/shadow.png) no-repeat no-repeat;*/
 }
