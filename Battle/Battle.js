@@ -2,7 +2,7 @@ class Battle {
   constructor() {
     this.combatants = {
       "player1": new Combatant({
-        ...Pizzas.s001,
+        ...PokemonsList[0][0],
         team: "player",
         hp: 30,
         maxHp: 50,
@@ -12,7 +12,7 @@ class Battle {
         status: null
       }, this),
       "enemy1": new Combatant({
-        ...Pizzas.v001,
+        ...PokemonsList[0][1],
         team: "enemy",
         hp: 20,
         maxHp: 50,
@@ -21,7 +21,7 @@ class Battle {
         level: 1,
       }, this),
       "enemy2": new Combatant({
-        ...Pizzas.f001,
+        ...PokemonsList[0][2],
         team: "enemy",
         hp: 25,
         maxHp: 50,
@@ -53,7 +53,6 @@ class Battle {
   init(container) {
     this.createElement();
     container.appendChild(this.element);
-
     Object.keys(this.combatants).forEach(key => {
       let combatant = this.combatants[key];
       combatant.id = key;

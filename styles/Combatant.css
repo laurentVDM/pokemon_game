@@ -119,22 +119,22 @@
   background: #582a79;
 }
 
-.Pizza {
+.Pokemon {
   position: absolute;
-  transform: scale(1.5);
+  transform: scale(1.2);
   /*background: url(/images/characters/pizzas/pizza-shadow.png) no-repeat no-repeat;*/
 }
-.Pizza[data-team="player"] {
+.Pokemon[data-team="player"] {
   bottom: 25px;
   left: 35px;
 }
-.Pizza[data-team="enemy"] {
+.Pokemon[data-team="enemy"] {
   top: 20px;
   right: 20px;
 }
-.Pizza[data-active="false"] {
+.Pokemon[data-active="false"] {
   opacity:0;
 }
-.Pizza[data-active="true"] {
+.Pokemon[data-active="true"] {
   opacity:1;
 }

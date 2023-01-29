@@ -44,11 +44,11 @@ class Combatant {
     
     //<img class="Combatant_type" src="${this.icon}" alt="${this.type}" />
 
-    this.pizzaElement = document.createElement("img");
-    this.pizzaElement.classList.add("Pizza");
-    this.pizzaElement.setAttribute("src", this.src );
-    this.pizzaElement.setAttribute("alt", this.name );
-    this.pizzaElement.setAttribute("data-team", this.team );
+    this.pokemonElement = document.createElement("img");
+    this.pokemonElement.classList.add("Pokemon");
+    this.pokemonElement.setAttribute("src", this.image );
+    this.pokemonElement.setAttribute("alt", this.name );
+    this.pokemonElement.setAttribute("data-team", this.team );
 
     this.hpFills = this.hudElement.querySelectorAll(".Combatant_life-container > rect");
     this.xpFills = this.hudElement.querySelectorAll(".Combatant_xp-container > rect");
@@ -60,9 +60,9 @@ class Combatant {
       this[key] = changes[key]
     });
 
-    //Update active flag to show the correct pizza & hud
+    //Update active flag to show the correct pokemon & hud
     this.hudElement.setAttribute("data-active", this.isActive);
-    this.pizzaElement.setAttribute("data-active", this.isActive);
+    this.pokemonElement.setAttribute("data-active", this.isActive);
 
     //Update HP & XP percent fills
     this.hpFills.forEach(rect => rect.style.width = `${this.hpPercent}%`)
@@ -79,7 +79,7 @@ class Combatant {
   init(container) {
     this.createElement();
     container.appendChild(this.hudElement);
-    container.appendChild(this.pizzaElement);
+    container.appendChild(this.pokemonElement);
     this.update();
   }
 
