@@ -47,8 +47,8 @@ class Combatant {
     this.pokemonElement = document.createElement("img");
     this.pokemonElement.classList.add("Pokemon");
     //si team du joueur on prend image de dos, sinon image normale
-    const teamImage = this.team ==="player" ? this.back_image : this.image
-    this.pokemonElement.setAttribute("src", teamImage );
+    const bonneImage = this.team ==="player" ? this.back_image : this.image
+    this.pokemonElement.setAttribute("src", bonneImage );
     this.pokemonElement.setAttribute("alt", this.name );
     this.pokemonElement.setAttribute("data-team", this.team );
 
@@ -76,6 +76,51 @@ class Combatant {
     //Update hp on screen (added)
     this.hudElement.querySelector(".Combatant_hp").innerText = this.hp + " / " + this.maxHp;
 
+    //status
+    const statusElement = this.hudElement.querySelector(".Combatant_status");
+    if (this.status) {
+      statusElement.innerText = this.status.type;
+      statusElement.style.display = "block";
+    } else {
+      statusElement.innerText = "";
+      statusElement.style.display = "none";
+    }
+  }
+
+  getReplacedEvents(originalEvents) {
+
+    if(this.status?.type === "paralyse" && utils.randomFromArray([true, true, false, false])) {  //25% chance
+      return [
+        {type: "textMessage", text: `${this.name} est paralyse, il n'a pas pu attaquer`}
+      ]
+    }
+    return originalEvents;
+  }
+
+  getPostEvents() {
+    if (this.status?.type === "soin") {
+      return [
+        {type: "textMessage", text: `${this.name} se soigne` },
+        {type: "stateChange", recover: 10, onCaster: true }
+      ]
+    }
+    return[];
+  }
+
+  decrementStatus() {
+    if(this.status?.expiresIn > 0) {
+      this.status.expiresIn -= 1;
+      if(this.status?.expiresIn === 0) {
+        this.update({
+          status: null
+        })
+        return {
+          type: "textMessage",
+          text: "fin de status"
+        }
+      }
+    }
+    return null;
   }
 
   init(container) {

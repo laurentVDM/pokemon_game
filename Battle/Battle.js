@@ -10,17 +10,23 @@ class Battle {
         maxXp: 100,
         level: 100,
         status: null,
-        actions: ["damage1"]
+        /*status: {
+          type: "soin",
+          img: "/img/status/brulure.png",
+          expiresIn: 1
+        },
+        */
+        actions: ["soinStatus", "damage1"]
       }, this),
       "enemy1": new Combatant({
         ...PokemonsList[0][1],
         team: "enemy",
         hp: 20,
-        maxHp: 50,
+        maxHp: 100,
         xp: 20,
         maxXp: 100,
         level: 1,
-        actions: ["damage1"]
+        actions: ["paralyseStatus","damage1"]
       }, this),
       "enemy2": new Combatant({
         ...PokemonsList[0][2],
