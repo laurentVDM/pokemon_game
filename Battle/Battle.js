@@ -9,7 +9,8 @@ class Battle {
         xp: 75,
         maxXp: 100,
         level: 100,
-        status: null
+        status: null,
+        actions: ["damage1"]
       }, this),
       "enemy1": new Combatant({
         ...PokemonsList[0][1],
@@ -19,6 +20,7 @@ class Battle {
         xp: 20,
         maxXp: 100,
         level: 1,
+        actions: ["damage1"]
       }, this),
       "enemy2": new Combatant({
         ...PokemonsList[0][2],
@@ -28,6 +30,7 @@ class Battle {
         xp: 30,
         maxXp: 100,
         level: 1,
+        actions: ["damage1"]
       }, this)
     }
     this.activeCombatants = {
@@ -53,11 +56,24 @@ class Battle {
   init(container) {
     this.createElement();
     container.appendChild(this.element);
+
     Object.keys(this.combatants).forEach(key => {
       let combatant = this.combatants[key];
       combatant.id = key;
-      combatant.init(this.element)
+      combatant.init(this.element);
     })
+
+    //creation cycle de tour, apres chauque tour on recoit une reponse, qu'on traite differement
+    this.turnCycle = new TurnCycle({
+      battle : this,
+      onNewEvent: event => {
+        return new Promise(resolve => {
+          const battleEvent = new BattleEvent(event, this)
+          battleEvent.init(resolve);
+        })
+      }
+    })
+    this.turnCycle.init();
 
   }
 

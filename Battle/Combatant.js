@@ -43,10 +43,12 @@ class Combatant {
     `);
     
     //<img class="Combatant_type" src="${this.icon}" alt="${this.type}" />
-
+    
     this.pokemonElement = document.createElement("img");
     this.pokemonElement.classList.add("Pokemon");
-    this.pokemonElement.setAttribute("src", this.image );
+    //si team du joueur on prend image de dos, sinon image normale
+    const teamImage = this.team ==="player" ? this.back_image : this.image
+    this.pokemonElement.setAttribute("src", teamImage );
     this.pokemonElement.setAttribute("alt", this.name );
     this.pokemonElement.setAttribute("data-team", this.team );
 

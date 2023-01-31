@@ -11,6 +11,7 @@
       const pokemon = results.map((result) =>({
         name: result.name,
         image: result.sprites.versions['generation-v']['black-white'].animated['front_default'],
+        back_image: result.sprites.versions['generation-v']['black-white'].animated['back_default'],
         type: result.types.map((type) => type.type.name).join(', '),
         id: result.id,
         stats: result.stats.map((stat) => stat.stat.name + ": " + stat.base_stat).join(', ')

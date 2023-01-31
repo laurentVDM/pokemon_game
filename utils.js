@@ -20,6 +20,13 @@ const utils = {
         }
         return {x,y};
     },
+    wait(ms) {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            resolve()
+          }, ms)
+        })
+    },
     emitEvent(name, detail) {
         const event = new CustomEvent(name, {
             detail
