@@ -35,7 +35,7 @@ class Battle {
       enemy: "enemy1",
     }
   }
-  "/img/personages/pokemon_hero_back_battle.png"
+  //"/img/personages/pokemon_hero_back_battle.png"
 
   createElement() {
     this.element = document.createElement("div");
