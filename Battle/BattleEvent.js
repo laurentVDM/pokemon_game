@@ -61,6 +61,10 @@ class BattleEvent {
         //Wait a little bit
         await utils.wait(600)
 
+        //update Team Components
+        this.battle.playerTeam.update();
+        this.battle.enemyTeam.update();
+
         //Update Team components
         //this.battle.playerTeam.update();
         //this.battle.enemyTeam.update();
@@ -112,6 +116,10 @@ class BattleEvent {
         this.battle.activeCombatants[replacement.team] = replacement.id;
         replacement.update();
         await utils.wait(400);
+
+        //update Team Components
+        this.battle.playerTeam.update();
+        this.battle.enemyTeam.update();
 
         resolve();
     }
