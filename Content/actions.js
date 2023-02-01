@@ -23,5 +23,25 @@ window.Actions = {
             {type: "stateChange", status: {type: "paralyse", expiresIn: 3} },
             {type: "textMessage", text: "{TARGET} va avoir du mal a attaquer"},
         ]
+    },
+    //items
+    item_recoverStatus: {
+        name: "poudre soin",
+        description: "soigne tous les problemes de status",
+        targetType: "friendly",
+        succes: [
+            {type: "textMessage", text: "{CASTER} utilise une {ACTION}"},
+            {type: "stateChange", status: null },
+            {type: "textMessage", text: "{CASTER} se sent mieux"},
+        ]
+    },
+    item_recoverHp: {
+        name: "potion",
+        description: "soigne le pokemon de 20 HP",
+        targetType: "friendly",
+        succes: [
+            {type: "textMessage", text: "{CASTER} utilise une {ACTION}"},
+            {type: "stateChange", recover: 20 },
+        ]
     }
 }
