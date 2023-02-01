@@ -16,7 +16,8 @@ class Battle {
           expiresIn: 1
         },
         */
-        actions: ["soinStatus", "damage1"]
+        actions: ["soinStatus", "damage1"],
+        isPlayerControlled: true
       }, this),
       "enemy1": new Combatant({
         ...PokemonsList[0][1],
