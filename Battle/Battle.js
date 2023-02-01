@@ -19,6 +19,18 @@ class Battle {
         actions: ["soinStatus", "damage1"],
         isPlayerControlled: true
       }, this),
+      "player2": new Combatant({
+        ...PokemonsList[0][5],
+        team: "player",
+        hp: 150,
+        maxHp: 150,
+        xp: 75,
+        maxXp: 100,
+        level: 75,
+        status: null,
+        actions: ["soinStatus", "damage1", "paralyseStatus"],
+        isPlayerControlled: true
+      }, this),
       "enemy1": new Combatant({
         ...PokemonsList[0][1],
         team: "enemy",

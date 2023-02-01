@@ -7,6 +7,7 @@
 
 .Battle .Combatant {
   transform: scale(1);
+  transition: opacity 0.6s;
 }
 .Battle .Combatant[data-active="false"] {
   opacity: 0;
@@ -122,6 +123,7 @@
 .Pokemon {
   position: absolute;
   transform: scale(1.2);
+  transition: opacity 0.6s, transform 0.6s;
   /*background: url(/images/characters/pizzas/pizza-shadow.png) no-repeat no-repeat;*/
 }
 .Pokemon[data-team="player"] {
@@ -133,8 +135,10 @@
   right: 20px;
 }
 .Pokemon[data-active="false"] {
-  opacity:0;
+  opacity: 0;
+  transform: translate3d(0,16px,0) scale(1.2);
 }
 .Pokemon[data-active="true"] {
-  opacity:1;
+  opacity: 1;
+  transform: translate3d(0,0,0) scale(1.2);
 }
