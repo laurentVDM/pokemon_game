@@ -4,6 +4,6 @@
             element: document.querySelector(".game-container")
         });
         overworld.init();
-    },3000)
+    },3)
 })
 ();

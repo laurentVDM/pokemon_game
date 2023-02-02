@@ -151,10 +151,18 @@ window.OverworldMaps = {
             npc1:new Person( {
                 x: utils.withGrid(22),
                 y: utils.withGrid(19),
-                src: "img/personages/perso2.png",
+                src: "img/personages/ghetsis.png",
                 behaviorLoop: [
                     { type: "stand", direction: "down", time: 1200},
                     { type: "stand", direction: "right", time: 1200},
+                ],
+                talking: [
+                    {
+                        events: [
+                            {type: "textMessage", text: "c'est l'heure du combat", faceHero:"npc1"},
+                            {type: "battle", enemyId: "ghetsis"}
+                        ]
+                    }
                 ]
             }),
             npc2: new Person( {
