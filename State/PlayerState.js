@@ -10,7 +10,7 @@ class PlayerState {
                 maxXp: 100,
                 level: 1,
                 status: null,
-                actions: ["soinStatus", "damage1"],
+                actions: ["paralyseStatus","soinStatus", "damage1"],
             },
             "p2": {
                 pokemonId: 1,

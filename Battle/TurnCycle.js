@@ -149,7 +149,7 @@ class TurnCycle {
     async init() {
         await this.onNewEvent({
             type: "textMessage",
-            text: `${this.battle.enemy} veut se battre`
+            text: `${this.battle.enemy.name} veut se battre`
         })
 
         //start first turn
