@@ -158,7 +158,7 @@ class Battle {
         })
         //get rid of player used items
         playerState.items = playerState.items.filter( item => {
-          return !this.usedInstanceIds[item.instanceIds]
+          return !this.usedInstanceIds[item.instanceId]
         })
 
         //if(winner === "player") {
