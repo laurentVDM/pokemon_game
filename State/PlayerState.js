@@ -32,6 +32,18 @@ class PlayerState {
             {actionId: "item_recoverHp", instanceId: "item3"},
         ];
     }
+
+    swapLineup(oldId, incomingId) {
+        const oldIndex = this.lineup.indexOf(oldId);
+        this.lineup[oldIndex] = incomingId;
+        //utils.emitEvent("LineupChanged");     pour hud, pas encore besoin
+    }
+    
+    moveToFront(futureFrontId) {
+        this.lineup = this.lineup.filter(id => id !== futureFrontId);
+        this.lineup.unshift(futureFrontId);
+        //utils.emitEvent("LineupChanged");     pour hud, pas  encore besoin
+    }
 }
 
 window.playerState = new PlayerState();

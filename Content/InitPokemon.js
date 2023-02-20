@@ -10,6 +10,7 @@
     Promise.all(promises).then((results)=>{
       const pokemon = results.map((result) =>({
         name: result.name,
+        icon: result.sprites.versions['generation-v']['black-white']['front_default'],
         image: result.sprites.versions['generation-v']['black-white'].animated['front_default'],
         back_image: result.sprites.versions['generation-v']['black-white'].animated['back_default'],
         type: result.types.map((type) => type.type.name).join(', '),
