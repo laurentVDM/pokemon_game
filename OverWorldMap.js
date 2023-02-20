@@ -58,7 +58,10 @@ class OverWorldMap {
                 event: events[i],
                 map: this,
             })
-            await eventHandler.init();
+            const result = await eventHandler.init();
+            if (result === "LOST_BATTLE"){
+                break;
+            }
         }
 
         this.isCutscenePlaying = false;
@@ -82,7 +85,13 @@ class OverWorldMap {
             return `${object.x},${object.y}` === `${nextCoords.x},${nextCoords.y}`
         })
         if(!this.isCutscenePlaying && match && match.talking.length) {
-            this.startCutScene(match.talking[0].events)
+
+            const relevantScenario = match.talking.find(scenario => {
+                return (scenario.required || []).every(sf => {
+                    return playerState.storyFlags[sf]
+                })
+            })
+            relevantScenario && this.startCutScene(relevantScenario.events)
         }
     }
 
@@ -161,7 +170,8 @@ window.OverworldMaps = {
                     {
                         events: [
                             {type: "textMessage", text: "c'est l'heure du combat", faceHero:"npc1"},
-                            {type: "battle", enemyId: "ghetsis"}
+                            {type: "addStoryFlag", flag: "TALKED_TO_NPC1"}
+                            //{type: "battle", enemyId: "ghetsis"}
                         ]
                     }
                 ]
@@ -171,17 +181,26 @@ window.OverworldMaps = {
                 y: utils.withGrid(19),
                 //src: "img/personages/infirmiere.png",
                 behaviorLoop: [
-                    { type: "walk", direction: "left"},
-                    { type: "stand", direction: "up", time: 800},
-                    { type: "walk", direction: "up"},
-                    { type: "walk", direction: "right"},
-                    { type: "walk", direction: "down"},
+                    // { type: "walk", direction: "left"},
+                    // { type: "stand", direction: "up", time: 800},
+                    // { type: "walk", direction: "up"},
+                    // { type: "walk", direction: "right"},
+                    // { type: "walk", direction: "down"},
                 ],
                 talking: [
                     {
+                        required: ["TALKED_TO_NPC1"],
                         events: [
-                            {type: "textMessage", text: "Bonjour, je veux faire un combat", faceHero:"npc2"},
-                            {type: "textMessage", text: "Alors, que le meilleur gagne!"}
+                            {type: "textMessage", text: "tu l'as battu? Alors, je veux faire un combat", faceHero:"npc2"},
+                            {type: "textMessage", text: "Que le meilleur gagne!"},
+                            {type: "battle", enemyId: "ghetsis"},
+                            {type: "addStoryFlag", flag: "DEFEATED_NPC2"},
+                            {type: "textMessage", text: "Wow, quel combat"},
+                        ]
+                    },
+                    {
+                        events: [
+                            {type: "textMessage", text: "Va battre l'autre gars", faceHero:"npc2"},
                         ]
                     }
                 ]

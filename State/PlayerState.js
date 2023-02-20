@@ -4,7 +4,7 @@ class PlayerState {
         this.pokemons = {
             "p1": {
                 pokemonId: 0,
-                hp: 30,
+                hp: 1,
                 maxHp: 50,
                 xp: 95,
                 maxXp: 100,
@@ -14,13 +14,13 @@ class PlayerState {
             },
             "p2": {
                 pokemonId: 1,
-                hp: 30,
+                hp: 1,
                 maxHp: 50,
                 xp: 95,
                 maxXp: 100,
                 level: 1,
                 status: null,
-                actions: ["soinStatus", "damage1"],
+                actions: ["paralyseStatus","soinStatus", "damage1"],
             }
         }
         //equipe
@@ -31,6 +31,9 @@ class PlayerState {
             {actionId: "item_recoverHp", instanceId: "item2"},
             {actionId: "item_recoverHp", instanceId: "item3"},
         ];
+        //storyflags pour dire qui on a battu par ex
+        this.storyFlags = {            
+        };
     }
 
     swapLineup(oldId, incomingId) {

@@ -161,12 +161,10 @@ class Battle {
           return !this.usedInstanceIds[item.instanceId]
         })
 
-        //if(winner === "player") {
-
-        //}
+        
 
         this.element.remove();
-        this.onComplete();
+        this.onComplete(winner==="player");
         //TODO: gerer si ennemy gagne
       }
     })
