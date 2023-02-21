@@ -36,6 +36,16 @@ class PlayerState {
         };
     }
 
+    pushItem(itemActionId) {
+        const newItemInstanceId = `item${Date.now()}`;
+        
+        this.items.push({
+            actionId: itemActionId,
+            instanceId: newItemInstanceId
+        })
+        console.log(this)
+    }
+
     swapLineup(oldId, incomingId) {
         const oldIndex = this.lineup.indexOf(oldId);
         this.lineup[oldIndex] = incomingId;

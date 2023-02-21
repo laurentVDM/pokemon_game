@@ -101,6 +101,12 @@ class OverWorldEvent {
         resolve();
     }
 
+    addItem(resolve) {
+        playerState.pushItem(this.event.item);
+        console.log(playerState)
+        resolve();
+    }
+
     init() {
         return new Promise(resolve => {
             this[this.event.type](resolve)

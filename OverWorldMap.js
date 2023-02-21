@@ -208,7 +208,8 @@ window.OverworldMaps = {
             pokeball1: new PokeballStone({
                 x: utils.withGrid(19),
                 y: utils.withGrid(21),
-                storyFlag: "USED_ITEM_1" 
+                storyFlag: "USED_ITEM_1",
+                item: "item_recoverStatus"
             }),
             
         },

@@ -12,6 +12,7 @@ class PokeballStone extends GameObject {
             currentAnimation: "used-down"
         });
         this.storyFlag = config.storyFlag;
+        this.item = config.item;
 
         this.talking = [
             {
@@ -23,6 +24,7 @@ class PokeballStone extends GameObject {
             {
                 events: [
                     {type: "textMessage", text: "Que contient la pokeball"},
+                    {type: "addItem", item: this.item},
                     {type: "addStoryFlag", flag: this.storyFlag},
                 ]
             }
