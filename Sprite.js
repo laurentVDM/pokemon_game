@@ -19,7 +19,7 @@ class Sprite {
             "walk-right": [ [1,2], [0,2], [3,2], [0,2] ],
             "walk-up"   : [ [1,3], [0,3], [3,3], [0,3] ]
         }
-        this.currentAnimation = "idle-right"; // config.currentAnimation || "idle-Down";
+        this.currentAnimation = config.currentAnimation || "idle-Down";
         this.currentAnimationFrame = 0;
 
         this.animationFrameLimit = config.animationFrameLimit || 12;     //vitesse d'animation
@@ -66,9 +66,9 @@ class Sprite {
         this.isLoaded && ctx.drawImage(
             this.image,
             frameX *64 , frameY *64,
-            this.image.width/4,this.image.height/4,
+            64,64,
             x,y,
-            this.image.width / 8,this.image.height / 8
+            32,32
         )      
 
         this.updateAnimationProgress();

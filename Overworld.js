@@ -77,7 +77,7 @@ class Overworld {
 
     init() {
         this.startMap(window.OverworldMaps.Ville1);   
-        
+        console.log(window.OverworldMaps.Ville1.gameObjects.pokeball1)
         this.bindActionInput();
         this.bindHeroPositionCheck();
 
