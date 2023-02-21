@@ -111,6 +111,7 @@ class OverWorldMap {
 
 window.OverworldMaps = {
     DemoRoom: {
+        id: "DemoRoom",
         lowerSrc: "img/maps/demoroom_lower.png",
         upperSrc: "img/maps/demoroom_upper.png",
         gameObjects: {
@@ -124,9 +125,25 @@ window.OverworldMaps = {
                 y: utils.withGrid(5),
                 src: "img/personages/perso2.png"
             })
+        },
+        cutSceneSpaces: {
+            [utils.asGridCoord(3,8)] : [
+                {
+                    events: [
+                        {
+                            type: "changeMap",
+                            map: "Ville1",
+                            x:utils.withGrid(37),
+                            y:utils.withGrid(20),
+                            direction: "down"
+                        }
+                    ]
+                }
+            ],
         }
     },
     Centre_Pokemon: {
+        id: "Centre_Pokemon",
         lowerSrc: "img/maps/centrepokemonLower.png",
         upperSrc: "img/maps/centrepokemonUpper.png",
         gameObjects:{
@@ -150,12 +167,13 @@ window.OverworldMaps = {
         }
     },
     Ville1: {
+        id: "Ville1",
         lowerSrc: "img/maps/ville1_lower.png",
         upperSrc: "img/maps/ville1_upper.png",
         gameObjects: {
             hero: new Person( {
                 isPlayerControlled: true,
-                x: utils.withGrid(11),
+                x: utils.withGrid(35),
                 y: utils.withGrid(20)
             }),
             npc1:new Person( {
@@ -229,7 +247,14 @@ window.OverworldMaps = {
             [utils.asGridCoord(37,19)] : [
                 {
                     events: [
-                        {type: "changeMap", map: "Centre_Pokemon"},
+                        {
+                            type: "changeMap",
+                            map: "DemoRoom",
+                            x:utils.withGrid(3),
+                            y:utils.withGrid(7),
+                            direction: "up"
+
+                        },
                     ]
                 }
             ]

@@ -69,15 +69,46 @@ class Overworld {
         });
     }
 
-    startMap(mapConfig) {        
+    startMap(mapConfig, heroInitialState=null) {        
         this.map = new OverWorldMap(mapConfig);
         this.map.overworld = this;
-        this.map.mountObjects();  
+        this.map.mountObjects(); 
+
+        if(heroInitialState){
+            const {hero} = this.map.gameObjects;
+            this.map.removeWall(hero.x, hero.y);
+            hero.x = heroInitialState.x;
+            hero.y = heroInitialState.y;
+            hero.direction = heroInitialState.direction;
+            this.map.addWall(hero.x,hero.y)
+        } 
+        //pour save
+        this.progress.mapId = mapConfig.id;
+        this.progress.startingHeroX = this.map.gameObjects.hero.x;
+        this.progress.startingHeroY = this.map.gameObjects.hero.y;
+        this.progress.startingHeroDirection = this.map.gameObjects.hero.direction;
     }
 
     init() {
-        this.startMap(window.OverworldMaps.Ville1);   
-        console.log(window.OverworldMaps.Ville1.gameObjects.pokeball1)
+        //create progress tracker
+        this.progress = new Progress();
+
+        //Potentially load saved data
+        let initialHeroState = null;
+        const saveFile = this.progress.getSafeFile();
+        if (saveFile) {
+            this.progress.load();
+            initialHeroState ={
+                x : this.progress.startingHeroX,
+                y : this.progress.startingHeroY,
+                direction : this.progress.startingHeroDirection,
+            }
+        }
+
+        //start first map
+        this.startMap(window.OverworldMaps[this.progress.mapId], initialHeroState);   
+
+        //create controls
         this.bindActionInput();
         this.bindHeroPositionCheck();
 
