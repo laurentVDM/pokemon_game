@@ -2,7 +2,7 @@
 
 (function() {
     const promises = []
-    for(let i=1; i<= 29/*649*/; i++) {
+    for(let i=1; i<= 649/*649*/; i++) {
       const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
       promises.push(fetch(url).then((res) => res.json()));      
     }

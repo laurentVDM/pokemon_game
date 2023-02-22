@@ -24,13 +24,13 @@ class Progress {
         }))
     }
 
-    getSafeFile() {
+    getSaveFile() {
         const file = window.localStorage.getItem(this.saveFileKey);
         return file ? JSON.parse(file) : null
     }
 
     load() {
-        const file = this.getSafeFile();
+        const file = this.getSaveFile();
         if(file) {
             this.mapId = file.mapId;
             this.startingHeroX = file.startingHeroX;

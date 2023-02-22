@@ -1,0 +1,39 @@
+.TitleScreen {
+    position: absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    background-color: black;
+}
+
+.TitleScreen_logo {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    scale: 100%;
+    width: 128px;
+}
+
+.TitleScreen .KeyboardMenu {
+    position: relative; 
+    bottom: 20px;
+    width: 90px;
+    margin: 0 auto;
+    background: transparent;
+    border: 0
+}
+
+.TitleScreen button {
+    color: #fff;
+    /*justify-content: content;*/
+    padding: 10px;
+    text-align: center;
+}
+
+.TitleScreen .DescriptionBox {    
+    background: transparent;
+    color: #a01910;
+    border: 0;
+    text-align: center;
+}
