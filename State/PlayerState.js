@@ -43,7 +43,6 @@ class PlayerState {
             actionId: itemActionId,
             instanceId: newItemInstanceId
         })
-        console.log(this)
     }
 
     swapLineup(oldId, incomingId) {

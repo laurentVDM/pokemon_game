@@ -108,7 +108,6 @@ class OverWorldEvent {
 
     addItem(resolve) {
         playerState.pushItem(this.event.item);
-        console.log(playerState)
         resolve();
     }
 

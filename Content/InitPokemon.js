@@ -6,7 +6,7 @@
       const url = `https://pokeapi.co/api/v2/pokemon/${i}`;
       promises.push(fetch(url).then((res) => res.json()));      
     }
-    console.log(promises)
+    
     Promise.all(promises).then((results)=>{
       const pokemon = results.map((result) =>({
         name: result.name,
@@ -18,10 +18,8 @@
         stats: result.stats.map((stat) => stat.stat.name + ": " + stat.base_stat).join(', ')
       }));
       PokemonsList.push(pokemon)
-      console.log("list",PokemonsList)
     })
     setTimeout(function() {
-        console.log('Les pokemons sont la');
     },3000);
 })
 ();

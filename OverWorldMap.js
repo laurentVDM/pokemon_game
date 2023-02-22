@@ -48,7 +48,6 @@ class OverWorldMap {
     }
 
     async startCutScene(events) {
-        console.log(events);
         this.isCutscenePlaying = true;
 
         //start loop of async events

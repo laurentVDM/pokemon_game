@@ -3,7 +3,6 @@ class PokeballStone extends GameObject {
         super(config);  
         this.sprite = new Sprite({
             gameObject: this,
-            //src: "/img/personages/ghetsis.png",
             src: "/img/maps/pokeball_duo.png",
             animations: {
                 "used-down"   : [ [1,0] ],
