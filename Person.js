@@ -3,6 +3,7 @@ class Person extends GameObject {
         super(config);
         this.movingProgressRemaining = 0;
         this.isStanding = false;
+        this.intentPosition = null; //or [x,y]
 
         this.isPlayerControlled = config.isPlayerControlled || false;
 
@@ -18,10 +19,6 @@ class Person extends GameObject {
         if (this.movingProgressRemaining > 0) {
             this.updatePosition();            
         }else {
-            //more cases for starting walking will come here
-            //
-            //
-
             //case: keyboard ready and arrow is pressed
             if(!state.map.isCutscenePlaying && this.isPlayerControlled && state.arrow){
                 this.startBehavior(state, {
@@ -36,6 +33,9 @@ class Person extends GameObject {
     }
 
     startBehavior(state, behavior) {
+        if (!this.isMounted) {
+            return;
+        }
         //set character direction to whatever behavior has
         this.direction = behavior.direction;
         if(behavior.type === "walk") {
@@ -49,8 +49,14 @@ class Person extends GameObject {
                 return;
             };
             //ready to walk
-            state.map.moveWall(this.x, this.y, this.direction);     //sets wall in our future position
             this.movingProgressRemaining = 16;
+            //Add next position intent
+            const intentPosition = utils.nextPosition(this.x, this.y, this.direction)
+            this.intentPosition = [
+                intentPosition.x,
+                intentPosition.y
+            ]
+
             this.updateSprite(state);
         }        
 

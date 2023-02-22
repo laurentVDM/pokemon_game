@@ -76,11 +76,9 @@ class Overworld {
 
         if(heroInitialState){
             const {hero} = this.map.gameObjects;
-            this.map.removeWall(hero.x, hero.y);
             hero.x = heroInitialState.x;
             hero.y = heroInitialState.y;
             hero.direction = heroInitialState.direction;
-            this.map.addWall(hero.x,hero.y)
         } 
         //pour save
         this.progress.mapId = mapConfig.id;
@@ -97,8 +95,8 @@ class Overworld {
         this.titleScreen = new Titlescreen({
             progress: this.progress
         })
-        const useSaveFile = await this.titleScreen.init(document.querySelector(".game-container"));
-
+        const useSaveFile = null //await this.titleScreen.init(document.querySelector(".game-container"));
+        
         //Potentially load saved data
         let initialHeroState = null;
         if (useSaveFile) {

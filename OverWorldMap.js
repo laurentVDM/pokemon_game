@@ -1,9 +1,10 @@
 class OverWorldMap {
     constructor(config) {
         this.overworld = null;
-        this.gameObjects = config.gameObjects;
-        this.cutSceneSpaces = config.cutSceneSpaces || {};
+        this.gameObjects = {};  //live objects
+        this.configObjects = config.configObjects; //configuration objets
 
+        this.cutSceneSpaces = config.cutSceneSpaces || {};
         this.walls = config.walls || {};
 
         this.lowerImage = new Image();
@@ -31,19 +32,37 @@ class OverWorldMap {
         )
     }
 
-    isSpaceTaken(currentX, currentY,direction) {
+    isSpaceTaken(currentX, currentY, direction) {
         const {x,y} = utils.nextPosition(currentX, currentY, direction);
-        return this.walls[`${x},${y}`] || false;
+        if (this.walls[`${x},${y}`]) {
+        return true;
+        }
+        //Check for game objects at this position
+        return Object.values(this.gameObjects).find(obj => {
+            if (obj.x === x && obj.y === y) { return true; }
+            if (obj.intentPosition && obj.intentPosition[0] === x && obj.intentPosition[1] === y ) {
+               return true;
+            }
+            return false;
+        })
     }
 
     mountObjects() {
-        Object.keys(this.gameObjects).forEach(key => {
+        Object.keys(this.configObjects).forEach(key => {
 
-            let object = this.gameObjects[key];
+            let object = this.configObjects[key];
             object.id = key;
-
-            //TODO : determine if this object should actually mount
-            object.mount(this);
+      
+            let instance;
+            if (object.type === "Person") {
+                instance = new Person(object);
+            }
+            if (object.type === "PokeballStone") {
+                instance = new PokeballStone(object);
+            }
+            this.gameObjects[key] = instance;
+            this.gameObjects[key].id = key;
+            instance.mount(this);
         })
     }
 
@@ -66,7 +85,7 @@ class OverWorldMap {
         this.isCutscenePlaying = false;
 
         //reset npc to do their idle behavior
-        Object.values(this.gameObjects).forEach(object => object.doBehaviorEvent(this));
+        //Object.values(this.gameObjects).forEach(object => object.doBehaviorEvent(this));
     }
 
     checkForFootstepCutScene() {
@@ -94,18 +113,7 @@ class OverWorldMap {
         }
     }
 
-    //wall code
-    addWall(x,y) {
-        this.walls[`${x},${y}`] = true;
-    }
-    removeWall(x,y) {
-        delete this.walls[`${x},${y}`];
-    }
-    moveWall(wasX, wasY, direction) {
-        this.removeWall(wasX,wasY);
-        const {x,y} = utils.nextPosition(wasX, wasY, direction);
-        this.addWall(x,y);
-    }
+    
 }
 
 window.OverworldMaps = {
@@ -113,17 +121,19 @@ window.OverworldMaps = {
         id: "DemoRoom",
         lowerSrc: "img/maps/demoroom_lower.png",
         upperSrc: "img/maps/demoroom_upper.png",
-        gameObjects: {
-            hero: new Person( {
+        configObjects: {
+            hero: {
+                type: "Person",
                 isPlayerControlled: true,
                 x: utils.withGrid(5),
                 y: utils.withGrid(6)
-            }),
-            npc1:new Person( {
+            },
+            npc1:{
+                type: "Person",
                 x: utils.withGrid(4),
                 y: utils.withGrid(5),
                 src: "img/personages/perso2.png"
-            })
+            }
         },
         cutSceneSpaces: {
             [utils.asGridCoord(3,8)] : [
@@ -145,13 +155,15 @@ window.OverworldMaps = {
         id: "Centre_Pokemon",
         lowerSrc: "img/maps/centrepokemonLower.png",
         upperSrc: "img/maps/centrepokemonUpper.png",
-        gameObjects:{
-            hero: new Person( {                
+        configObjects:{
+            hero: {  
+                type: "Person",              
                 isPlayerControlled: true,
                 x: utils.withGrid(5),
                 y: utils.withGrid(6)
-            }),
-            infirmiere: new Person( {
+            },
+            infirmiere: {
+                type: "Person",
                 x: utils.withGrid(10),
                 y: utils.withGrid(3),
                 src: "img/personages/infirmiere.png",
@@ -162,20 +174,22 @@ window.OverworldMaps = {
                         ]
                     }
                 ],
-            })
+            }
         }
     },
     Ville1: {
         id: "Ville1",
         lowerSrc: "img/maps/ville1_lower.png",
         upperSrc: "img/maps/ville1_upper.png",
-        gameObjects: {
-            hero: new Person( {
+        configObjects: {
+            hero: {
+                type: "Person",
                 isPlayerControlled: true,
                 x: utils.withGrid(35),
                 y: utils.withGrid(20)
-            }),
-            npc1:new Person( {
+            },
+            npc1: {
+                type: "Person",
                 x: utils.withGrid(22),
                 y: utils.withGrid(19),
                 src: "img/personages/ghetsis.png",
@@ -192,17 +206,18 @@ window.OverworldMaps = {
                         ]
                     }
                 ]
-            }),
-            npc2: new Person( {
+            },
+            npc2: {
+                type: "Person",
                 x: utils.withGrid(30),
                 y: utils.withGrid(19),
                 //src: "img/personages/infirmiere.png",
                 behaviorLoop: [
-                    // { type: "walk", direction: "left"},
-                    // { type: "stand", direction: "up", time: 800},
-                    // { type: "walk", direction: "up"},
-                    // { type: "walk", direction: "right"},
-                    // { type: "walk", direction: "down"},
+                    { type: "walk", direction: "left"},
+                    { type: "stand", direction: "up", time: 800},
+                    { type: "walk", direction: "up"},
+                    { type: "walk", direction: "right"},
+                    { type: "walk", direction: "down"},
                 ],
                 talking: [
                     {
@@ -221,13 +236,14 @@ window.OverworldMaps = {
                         ]
                     }
                 ]
-            }),
-            pokeball1: new PokeballStone({
+            },
+            pokeball1: {
+                type: "PokeballStone",
                 x: utils.withGrid(19),
                 y: utils.withGrid(21),
                 storyFlag: "USED_ITEM_1",
                 item: "item_recoverStatus"
-            }),
+            },
             
         },
         walls: {            
