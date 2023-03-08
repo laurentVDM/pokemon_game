@@ -160,12 +160,12 @@ window.OverworldMaps = {
                 type: "Person",              
                 isPlayerControlled: true,
                 x: utils.withGrid(5),
-                y: utils.withGrid(6)
+                y: utils.withGrid(14)
             },
             infirmiere: {
                 type: "Person",
-                x: utils.withGrid(10),
-                y: utils.withGrid(3),
+                x: utils.withGrid(15),
+                y: utils.withGrid(12),
                 src: "img/personages/infirmiere.png",
                 talking: [
                     {
@@ -175,6 +175,21 @@ window.OverworldMaps = {
                     }
                 ],
             }
+        },
+        cutSceneSpaces: {
+            [utils.asGridCoord(15,22)] : [
+                {
+                    events: [
+                        {
+                            type: "changeMap",
+                            map: "Ville1",
+                            x:utils.withGrid(37),
+                            y:utils.withGrid(20),
+                            direction: "down"
+                        }
+                    ]
+                }
+            ],
         }
     },
     Ville1: {
@@ -264,9 +279,9 @@ window.OverworldMaps = {
                     events: [
                         {
                             type: "changeMap",
-                            map: "DemoRoom",
-                            x:utils.withGrid(3),
-                            y:utils.withGrid(7),
+                            map: "Centre_Pokemon",
+                            x:utils.withGrid(15),
+                            y:utils.withGrid(21),
                             direction: "up"
 
                         },
