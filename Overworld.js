@@ -95,8 +95,7 @@ class Overworld {
         this.titleScreen = new Titlescreen({
             progress: this.progress
         })
-        const useSaveFile = null //
-        await this.titleScreen.init(document.querySelector(".game-container"));
+        const useSaveFile = /*null*/ await this.titleScreen.init(document.querySelector(".game-container"));
         
         //Potentially load saved data
         let initialHeroState = null;

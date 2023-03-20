@@ -110,6 +110,9 @@ class Battle {
   }
 
   init(container) {
+    utils.stopAllMusic();
+    audio.battle.play();
+
     this.createElement();
     container.appendChild(this.element);
 

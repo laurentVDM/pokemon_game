@@ -41,6 +41,11 @@ const utils = {
         if(direction === "right") { return "left";}
         if(direction === "down") { return "up";}
         if(direction === "up") { return "down";}
+    },
+    stopAllMusic() {
+        Object.keys(audio).forEach(music => {
+            audio[music].stop()
+        })
     }
     
 }

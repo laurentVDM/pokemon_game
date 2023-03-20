@@ -292,3 +292,11 @@ window.OverworldMaps = {
 
     }
 }
+let clicked = false
+addEventListener('click', () => {
+  if (!clicked) {
+    audio.base.play()
+    loop = true,
+    clicked = true
+  }
+})
