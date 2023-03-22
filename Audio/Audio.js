@@ -11,12 +11,19 @@ const audio = {
         loop: true,
         volume: 0.1
     }),
-    Ville1: new Howl({
-        src: './audio/FunkyKaaris.mp3',
+    Centre_Pokemon: new Howl({
+        src: './audio/CentrePokemon.mp3',
         html5: true,
         loop: true,
         volume: 0.1
     }),
+    Ville1: new Howl({
+        src: './audio/lofiChill.mp3',
+        html5: true,
+        loop: true,
+        volume: 0.1
+    }),
+
 
 
 }

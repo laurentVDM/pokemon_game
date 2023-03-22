@@ -84,14 +84,18 @@ class OverWorldEvent {
     }
 
     battle(resolve) {
+        audio[this.map.overworld.progress.mapId].pause()
         const battle = new Battle({
             enemy: Enemies[this.event.enemyId],
             onComplete: (didWin) => {
                 resolve(didWin ? "WON_BATTLE": "LOST_BATTLE");
+                //plays music of the map again
+                utils.stopAllMusic();
+                audio[this.map.overworld.progress.mapId].play();
             }
         })
         battle.init(document.querySelector(".game-container"));
-    
+        //audio[map].play();
     }
 
     pause(resolve){

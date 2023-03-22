@@ -73,6 +73,8 @@ class Overworld {
         this.map = new OverWorldMap(mapConfig);
         this.map.overworld = this;
         this.map.mountObjects(); 
+        utils.stopAllMusic();
+        audio[mapConfig.id].play();
 
         if(heroInitialState){
             const {hero} = this.map.gameObjects;
