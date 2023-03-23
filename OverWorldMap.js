@@ -6,6 +6,7 @@ class OverWorldMap {
 
         this.cutSceneSpaces = config.cutSceneSpaces || {};
         this.walls = config.walls || {};
+        this.battleZoneSpaces = config.battleZoneSpaces || {};
 
         this.lowerImage = new Image();
         this.lowerImage.src = config.lowerSrc;
@@ -35,7 +36,7 @@ class OverWorldMap {
     isSpaceTaken(currentX, currentY, direction) {
         const {x,y} = utils.nextPosition(currentX, currentY, direction);
         if (this.walls[`${x},${y}`]) {
-        return true;
+            return true;
         }
         //Check for game objects at this position
         return Object.values(this.gameObjects).find(obj => {
@@ -91,9 +92,14 @@ class OverWorldMap {
     checkForFootstepCutScene() {
         const hero = this.gameObjects["hero"];
         const match = this.cutSceneSpaces[`${hero.x},${hero.y}`];
+        const matchBattleZoneSpaces = this.battleZoneSpaces[`${hero.x},${hero.y}`];    //check if hero is on battlezone
         if (!this.isCutscenePlaying && match) {
             this.startCutScene( match[0].events) 
         }
+        else if (matchBattleZoneSpaces && utils.randomFromArray([true, true, false, false])){
+            this.startCutScene(matchBattleZoneSpaces.events)
+        }
+
     }
 
     checkForActionCutScene() {
@@ -252,6 +258,44 @@ window.OverworldMaps = {
                     }
                 ]
             },
+            npc3: {
+                type: "Person",
+                x: utils.withGrid(15),
+                y: utils.withGrid(9),
+                src: "img/personages/ghetsis.png",
+                behaviorLoop: [
+                    { type: "stand", direction: "down", time: 1200},
+                    { type: "stand", direction: "right", time: 1200},
+                ],
+                talking: [
+                    {
+                        events: [
+                            {type: "textMessage", text: "c'est l'heure du combat", faceHero:"npc1"},
+                            {type: "addStoryFlag", flag: "TALKED_TO_NPC1"}
+                            //{type: "battle", enemyId: "ghetsis"}
+                        ]
+                    }
+                ]
+            },
+            npc4: {
+                type: "Person",
+                x: utils.withGrid(33),
+                y: utils.withGrid(11),
+                src: "img/personages/ghetsis.png",
+                behaviorLoop: [
+                    { type: "stand", direction: "down", time: 1200},
+                    { type: "stand", direction: "right", time: 1200},
+                ],
+                talking: [
+                    {
+                        events: [
+                            {type: "textMessage", text: "c'est l'heure du combat", faceHero:"npc1"},
+                            {type: "addStoryFlag", flag: "TALKED_TO_NPC1"}
+                            //{type: "battle", enemyId: "ghetsis"}
+                        ]
+                    }
+                ]
+            },
             pokeball1: {
                 type: "PokeballStone",
                 x: utils.withGrid(19),
@@ -263,6 +307,28 @@ window.OverworldMaps = {
         },
         walls: {            
             [utils.asGridCoord(11,19)] : true,            
+        },
+        battleZoneSpaces: {
+            [utils.asGridCoord(33,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(32,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(31,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(30,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(29,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(28,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(27,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(26,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(25,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(24,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(23,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(22,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(21,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(20,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(19,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(18,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(17,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(16,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(15,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+
         },
         cutSceneSpaces: {
             [utils.asGridCoord(11,20)] : [

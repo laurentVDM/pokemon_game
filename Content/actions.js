@@ -4,7 +4,7 @@ window.Actions = {
         succes: [
             {type: "textMessage", text: "{CASTER} utilise {ACTION}"},
             {type: "animation", animation: "spin"},
-            {type: "stateChange", damage: 10}
+            {type: "stateChange", damage: 100}
         ]
     },
     soinStatus: {

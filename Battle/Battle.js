@@ -3,64 +3,19 @@ class Battle {
 
     this.enemy = enemy;
     this.onComplete = onComplete;
+    this.copy = new Object;
 
-    this.combatants = {
-      // "player1": new Combatant({
-      //   ...PokemonsList[0][0],
-      //   team: "player",
-      //   hp: 30,
-      //   maxHp: 50,
-      //   xp: 95,
-      //   maxXp: 100,
-      //   level: 1,
-      //   status: null,
-      //   /*status: {
-      //     type: "soin",
-      //     img: "/img/status/brulure.png",
-      //     expiresIn: 1
-      //   },
-      //   */
-      //   actions: ["soinStatus", "damage1"],
-      //   isPlayerControlled: true
-      // }, this),
-      // "player2": new Combatant({
-      //   ...PokemonsList[0][5],
-      //   team: "player",
-      //   hp: 150,
-      //   maxHp: 150,
-      //   xp: 75,
-      //   maxXp: 100,
-      //   level: 75,
-      //   status: null,
-      //   actions: ["soinStatus", "damage1", "paralyseStatus"],
-      //   isPlayerControlled: true
-      // }, this),
-      // "enemy1": new Combatant({
-      //   ...PokemonsList[0][1],
-      //   team: "enemy",
-      //   hp: 20,
-      //   maxHp: 100,
-      //   xp: 20,
-      //   maxXp: 100,
-      //   level: 1,
-      //   actions: ["damage1","paralyseStatus"]
-      // }, this),
-      // "enemy2": new Combatant({
-      //   ...PokemonsList[0][2],
-      //   team: "enemy",
-      //   hp: 25,
-      //   maxHp: 50,
-      //   xp: 30,
-      //   maxXp: 100,
-      //   level: 1,
-      //   actions: ["damage1"]
-      // }, this)
-    }
+    this.combatants = {}
 
     this.activeCombatants = {
       player: null,
       enemy: null,
     }
+
+    if(this.enemy.name === "savage"){
+      this.randomPokemon();
+    }
+    
 
     //dynamically add player team
     window.playerState.lineup.forEach(id => {
@@ -82,6 +37,17 @@ class Battle {
       })
     })
     this.usedInstanceIds = {};
+  }
+
+  randomPokemon(){   
+      let pokeLength = Object.keys(this.enemy.pokemons).length;
+      let random = Math.floor(Math.random()*pokeLength+1)
+      for(let i=0; i<pokeLength; i++){
+        this.copy[i] = this.enemy.pokemons[i]
+        if(i !== random-1){          
+          delete this.enemy.pokemons[i]
+        }
+      }    
   }
 
   addCombatant(id, team, config) {
@@ -164,6 +130,8 @@ class Battle {
           return !this.usedInstanceIds[item.instanceId]
         })
 
+        //if savage pokemon reput all pokemons in the list
+        this.enemy.pokemons = this.copy;
         
 
         this.element.remove();
