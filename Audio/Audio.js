@@ -23,6 +23,12 @@ const audio = {
         loop: true,
         volume: 0.1
     }),
+    ProfLab: new Howl({
+        src: './audio/FunkyKaaris.mp3',
+        html5: true,
+        loop: true,
+        volume: 0.1
+    }),
 
 
 

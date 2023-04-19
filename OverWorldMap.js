@@ -123,10 +123,10 @@ class OverWorldMap {
 }
 
 window.OverworldMaps = {
-    DemoRoom: {
-        id: "DemoRoom",
-        lowerSrc: "img/maps/demoroom_lower.png",
-        upperSrc: "img/maps/demoroom_upper.png",
+    ProfLab: {
+        id: "ProfLab",
+        lowerSrc: "img/maps/prof_lab.png",
+        upperSrc: "img/maps/prof_lab_upper.png",
         configObjects: {
             hero: {
                 type: "Person",
@@ -142,13 +142,14 @@ window.OverworldMaps = {
             }
         },
         cutSceneSpaces: {
-            [utils.asGridCoord(3,8)] : [
+            [utils.asGridCoord(9,17)] : [
                 {
                     events: [
-                        {
+                        {   
+                            //TODO:changer ou on est tp
                             type: "changeMap",
                             map: "Ville1",
-                            x:utils.withGrid(37),
+                            x:utils.withGrid(37),   
                             y:utils.withGrid(20),
                             direction: "down"
                         }
