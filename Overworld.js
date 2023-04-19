@@ -7,6 +7,13 @@ class Overworld {
     }
 
     startGameLoop() {
+        //img for walls
+        let wallImg = new Image();
+        wallImg.src = "/img/orange.png"
+        //img for battleZone
+        let battleZoneImg = new Image();
+        battleZoneImg.src = "/img/purple.png"
+
         const step = () => {
 
             //Clear off canvas before drawing new layers
@@ -29,8 +36,21 @@ class Overworld {
             //draw game objects
             Object.values(this.map.gameObjects).sort((a,b) => {
                 return a.y-b.y;
-            }).forEach(object => {                
+            }).forEach(object => {              
                 object.sprite.draw(this.ctx, cameraPerson);
+            })
+                       
+            //draw walls
+            Object.keys(this.map.walls).forEach(key => {
+                const [x, y] = key.split(',');                
+                this.ctx.drawImage( wallImg, x-cameraPerson.x+ utils.withGrid(10.5), y-cameraPerson.y+ utils.withGrid(6));
+            })
+
+            //draw battlezoneSpaces
+            Object.keys(this.map.battleZoneSpaces).forEach(key => {
+                const [x, y] = key.split(',');
+                
+                this.ctx.drawImage( battleZoneImg, x-cameraPerson.x+ utils.withGrid(10.5), y-cameraPerson.y+ utils.withGrid(6));
             })
 
             //draw upper layer

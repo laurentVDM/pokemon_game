@@ -66,7 +66,7 @@ class OverWorldMap {
             instance.mount(this);
         })
     }
-    
+
     async startCutScene(events) {
         this.isCutscenePlaying = true;
 
@@ -347,7 +347,7 @@ window.OverworldMaps = {
             
         },
         walls: {            
-            [utils.asGridCoord(11,19)] : true,            
+            [utils.asGridCoord(11,19)] : true,           
         },
         battleZoneSpaces: {
             [utils.asGridCoord(33,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
