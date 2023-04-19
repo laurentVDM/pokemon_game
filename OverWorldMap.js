@@ -66,7 +66,7 @@ class OverWorldMap {
             instance.mount(this);
         })
     }
-
+    
     async startCutScene(events) {
         this.isCutscenePlaying = true;
 
@@ -96,7 +96,7 @@ class OverWorldMap {
         if (!this.isCutscenePlaying && match) {
             this.startCutScene( match[0].events) 
         }
-        else if (matchBattleZoneSpaces && utils.randomFromArray([true, true, false, false])){
+        else if (matchBattleZoneSpaces && utils.randomFromArray([true, false, false, false, false, false])){    //1 chance sur 6 
             this.startCutScene(matchBattleZoneSpaces.events)
         }
 
@@ -181,6 +181,47 @@ window.OverworldMaps = {
                     }
                 ],
             }
+        },
+        walls: {  
+            //haut gauche
+            [utils.asGridCoord(6,11)] : true,
+            [utils.asGridCoord(7,11)] : true,
+            [utils.asGridCoord(8,11)] : true,
+            [utils.asGridCoord(9,11)] : true,
+            //gauche mur
+            [utils.asGridCoord(5,12)] : true,
+            [utils.asGridCoord(5,13)] : true,
+            [utils.asGridCoord(5,14)] : true,
+            [utils.asGridCoord(5,15)] : true,
+            //gauche escalator
+            [utils.asGridCoord(6,16)] : true,
+            [utils.asGridCoord(7,16)] : true,
+            [utils.asGridCoord(6,17)] : true,
+            [utils.asGridCoord(7,17)] : true,
+            //gauche dessous escalator
+            [utils.asGridCoord(5,18)] : true,
+            [utils.asGridCoord(5,19)] : true,
+            [utils.asGridCoord(5,20)] : true,
+            //coin bas gauche
+            [utils.asGridCoord(6,21)] : true,
+            //mur bas 
+            [utils.asGridCoord(7,22)] : true,
+            [utils.asGridCoord(8,22)] : true,  
+            [utils.asGridCoord(9,22)] : true,
+            [utils.asGridCoord(10,22)] : true,
+            [utils.asGridCoord(11,22)] : true,  
+            [utils.asGridCoord(12,22)] : true,  
+            [utils.asGridCoord(13,22)] : true,  
+            //laisse 2 pour la porte
+            [utils.asGridCoord(16,22)] : true,              
+            [utils.asGridCoord(17,22)] : true,                         
+            [utils.asGridCoord(18,22)] : true,                          
+            [utils.asGridCoord(19,22)] : true,                          
+            [utils.asGridCoord(20,22)] : true,              
+            [utils.asGridCoord(21,22)] : true,              
+            [utils.asGridCoord(22,22)] : true,
+            //coin bas droit                          
+            [utils.asGridCoord(23,21)] : true, 
         },
         cutSceneSpaces: {
             [utils.asGridCoord(15,22)] : [
