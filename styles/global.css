@@ -2,9 +2,10 @@
     --border-color: #291D4D;
     --dialog-background: #FFF3B4;
 
-    --menu-background: #FFE8D2;
-    --menu-border-color: #A48465;
-    --menu-font-color: #3A160D;
+    --menu-background: rgba(0,0,0,0.7);
+    --menu-background-blend-mode: darken;
+    --menu-border-color: black;
+    --menu-font-color: white;
     --menu-selected-background: #7FC2FF;
 }
 

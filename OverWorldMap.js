@@ -50,7 +50,6 @@ class OverWorldMap {
 
     mountObjects() {
         Object.keys(this.configObjects).forEach(key => {
-
             let object = this.configObjects[key];
             object.id = key;
       
@@ -60,6 +59,9 @@ class OverWorldMap {
             }
             if (object.type === "PokeballStone") {
                 instance = new PokeballStone(object);
+            }
+            if (object.type === "StarterChoice") {
+                instance = new StarterChoice(object);
             }
             this.gameObjects[key] = instance;
             this.gameObjects[key].id = key;
@@ -134,12 +136,36 @@ window.OverworldMaps = {
                 x: utils.withGrid(5),
                 y: utils.withGrid(6)
             },
-            npc1:{
+            professeur:{
                 type: "Person",
-                x: utils.withGrid(4),
-                y: utils.withGrid(5),
-                src: "img/personages/perso2.png"
-            }
+                x: utils.withGrid(9),
+                y: utils.withGrid(11),
+                src: "img/personages/professeur.png"
+            },
+            starterChoice1: {
+                type: "StarterChoice",
+                x: utils.withGrid(3),
+                y: utils.withGrid(4),
+                storyFlag: "Starter_GOT",   //meme dans StartChoiceMenu
+                pokemons: {
+                    "p1": {
+                        pokemonId: 0,
+                        maxHp: 50,
+                        maxXp: 100,
+                    },
+                    "p2": {
+                        pokemonId: 3,
+                        maxHp: 50,
+                        maxXp: 100,
+                    },
+                    "p3": {
+                        pokemonId:6,
+                        maxHp: 50,
+                        maxXp: 100,
+                    }
+
+                }
+            },
         },
         cutSceneSpaces: {
             [utils.asGridCoord(9,17)] : [

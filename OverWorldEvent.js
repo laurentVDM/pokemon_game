@@ -121,6 +121,27 @@ class OverWorldEvent {
         resolve();
     }
 
+    selectPokemon(resolve) {
+        this.map.isPaused = true;
+        const menu = new StarterChoiceMenu({
+            pokemons: this.event.pokemons,
+            storyFlag: this.event.storyFlag,
+            onComplete: (selectedPokemon, storyflagParam) => {
+                if(selectedPokemon){
+                    console.log("y a un choix")
+                    playerState.pushPokemon(selectedPokemon);
+                    console.log("storyFlag", storyflagParam)
+                    playerState.storyFlags[storyflagParam] = true;
+                }else{
+                    resolve();
+                    this.map.isPaused = false;
+                    this.map.overworld.startGameLoop();
+                }
+            },
+        });
+        menu.init(document.querySelector('.game-container'));
+    }
+
     init() {
         return new Promise(resolve => {
             this[this.event.type](resolve)

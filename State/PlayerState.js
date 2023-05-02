@@ -45,6 +45,30 @@ class PlayerState {
         })
     }
 
+    pushPokemon(pokemon) {
+        console.log(pokemon)
+        //const pokemonKey = Object.keys(pokemon)[0];
+        const newPokemonId = pokemon.pokemonId;
+        const newMaxHP = pokemon.maxHp;
+        const newMaxXP = pokemon.maxXp;
+
+        const newPokemonKey = "p" + (Object.keys(this.pokemons).length + 1);
+
+        this.pokemons[newPokemonKey] = {
+            pokemonId: newPokemonId,
+            hp: newMaxHP,
+            maxHp: newMaxHP,
+            xp: 0,
+            maxXp: newMaxXP,
+            level: 5,
+            status: null,
+            actions: ["soinStatus", "damage1"],
+        };
+
+        console.log("liste des pokemons apres un ajout: ", this.pokemons)
+        this.lineup.push(newPokemonKey)
+    }
+
     swapLineup(oldId, incomingId) {
         const oldIndex = this.lineup.indexOf(oldId);
         this.lineup[oldIndex] = incomingId;

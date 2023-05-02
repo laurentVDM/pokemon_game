@@ -3,7 +3,9 @@
     background: var(--menu-background);
     position: absolute;
 }
-.KeyboardMenu button {
+.KeyboardMenu button {    
+    color: white;
+    font-family: inherit;
     display: flex;
     align-items: center;
     width: 100%;
