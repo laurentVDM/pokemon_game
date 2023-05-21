@@ -95,7 +95,16 @@ class OverWorldMap {
         const hero = this.gameObjects["hero"];
         const match = this.cutSceneSpaces[`${hero.x},${hero.y}`];
         const matchBattleZoneSpaces = this.battleZoneSpaces[`${hero.x},${hero.y}`];    //check if hero is on battlezone
-        if (!this.isCutscenePlaying && match) {
+        if(!this.isCutscenePlaying && match && match[0].required) {
+            const relevantScenario = match.find(scenario => {
+                return (scenario.required || []).every(sf => {
+                    return playerState.storyFlags[sf]
+                })
+            })
+            relevantScenario && this.startCutScene(relevantScenario.events)
+        }
+
+        else if (!this.isCutscenePlaying && match) {
             this.startCutScene( match[0].events) 
         }
         else if (matchBattleZoneSpaces && utils.randomFromArray([true, false, false, false, false, false])){    //1 chance sur 6 
@@ -174,9 +183,9 @@ window.OverworldMaps = {
                         {   
                             //TODO:changer ou on est tp
                             type: "changeMap",
-                            map: "Ville1",
-                            x:utils.withGrid(37),   
-                            y:utils.withGrid(20),
+                            map: "Ville_depart",
+                            x:utils.withGrid(17),   
+                            y:utils.withGrid(36),
                             direction: "down"
                         }
                     ]
@@ -266,10 +275,10 @@ window.OverworldMaps = {
             ],
         }
     },
-    Ville1: {
-        id: "Ville1",
-        lowerSrc: "img/maps/ville1_lower.png",
-        upperSrc: "img/maps/ville1_upper.png",
+    Ville_depart: {
+        id: "Ville_depart",
+        lowerSrc: "img/maps/ville_depart_lower.png",
+        upperSrc: "img/maps/ville_depart_upper.png",
         configObjects: {
             hero: {
                 type: "Person",
@@ -279,91 +288,72 @@ window.OverworldMaps = {
             },
             npc1: {
                 type: "Person",
-                x: utils.withGrid(22),
-                y: utils.withGrid(19),
+                x: utils.withGrid(15),
+                y: utils.withGrid(21),
                 src: "img/personages/ghetsis.png",
-                behaviorLoop: [
-                    { type: "stand", direction: "down", time: 1200},
-                    { type: "stand", direction: "right", time: 1200},
-                ],
                 talking: [
                     {
-                        events: [
-                            {type: "textMessage", text: "c'est l'heure du combat", faceHero:"npc1"},
-                            {type: "addStoryFlag", flag: "TALKED_TO_NPC1"}
-                            //{type: "battle", enemyId: "ghetsis"}
-                        ]
-                    }
-                ]
-            },
-            npc2: {
-                type: "Person",
-                x: utils.withGrid(30),
-                y: utils.withGrid(19),
-                //src: "img/personages/infirmiere.png",
-                behaviorLoop: [
-                    { type: "walk", direction: "left"},
-                    { type: "stand", direction: "up", time: 800},
-                    { type: "walk", direction: "up"},
-                    { type: "walk", direction: "right"},
-                    { type: "walk", direction: "down"},
-                ],
-                talking: [
-                    {
-                        required: ["TALKED_TO_NPC1"],
-                        events: [
-                            {type: "textMessage", text: "tu l'as battu? Alors, je veux faire un combat", faceHero:"npc2"},
-                            {type: "textMessage", text: "Que le meilleur gagne!"},
-                            {type: "battle", enemyId: "ghetsis"},
-                            {type: "addStoryFlag", flag: "DEFEATED_NPC2"},
-                            {type: "textMessage", text: "Wow, quel combat"},
-                        ]
+                        required:["DEFEATED_NPC1"],
+                        events: []
                     },
                     {
                         events: [
-                            {type: "textMessage", text: "Va battre l'autre gars", faceHero:"npc2"},
-                        ]
-                    }
-                ]
-            },
-            npc3: {
-                type: "Person",
-                x: utils.withGrid(15),
-                y: utils.withGrid(9),
-                src: "img/personages/ghetsis.png",
-                behaviorLoop: [
-                    { type: "stand", direction: "down", time: 1200},
-                    { type: "stand", direction: "right", time: 1200},
-                ],
-                talking: [
-                    {
-                        events: [
                             {type: "textMessage", text: "c'est l'heure du combat", faceHero:"npc1"},
-                            {type: "addStoryFlag", flag: "TALKED_TO_NPC1"}
-                            //{type: "battle", enemyId: "ghetsis"}
+                            {type: "battle", enemyId: "ghetsis"},
+                            {type: "addStoryFlag", flag: "DEFEATED_NPC1"},
                         ]
                     }
                 ]
             },
-            npc4: {
-                type: "Person",
-                x: utils.withGrid(33),
-                y: utils.withGrid(11),
-                src: "img/personages/ghetsis.png",
-                behaviorLoop: [
-                    { type: "stand", direction: "down", time: 1200},
-                    { type: "stand", direction: "right", time: 1200},
-                ],
-                talking: [
-                    {
-                        events: [
-                            {type: "textMessage", text: "c'est l'heure du combat", faceHero:"npc1"},
-                            {type: "addStoryFlag", flag: "TALKED_TO_NPC1"}
-                            //{type: "battle", enemyId: "ghetsis"}
-                        ]
-                    }
-                ]
-            },
+            // npc2: {
+            //     type: "Person",
+            //     x: utils.withGrid(30),
+            //     y: utils.withGrid(19),
+            //     //src: "img/personages/infirmiere.png",
+            //     behaviorLoop: [
+            //         { type: "walk", direction: "left"},
+            //         { type: "stand", direction: "up", time: 800},
+            //         { type: "walk", direction: "up"},
+            //         { type: "walk", direction: "right"},
+            //         { type: "walk", direction: "down"},
+            //     ],
+            //     talking: [
+            //         {
+            //             required: ["TALKED_TO_NPC1"],
+            //             events: [
+            //                 {type: "textMessage", text: "tu l'as battu? Alors, je veux faire un combat", faceHero:"npc2"},
+            //                 {type: "textMessage", text: "Que le meilleur gagne!"},
+            //                 {type: "battle", enemyId: "ghetsis"},
+            //                 {type: "addStoryFlag", flag: "DEFEATED_NPC2"},
+            //                 {type: "textMessage", text: "Wow, quel combat"},
+            //             ]
+            //         },
+            //         {
+            //             events: [
+            //                 {type: "textMessage", text: "Va battre l'autre gars", faceHero:"npc2"},
+            //             ]
+            //         }
+            //     ]
+            // },
+            // npc3: {
+            //     type: "Person",
+            //     x: utils.withGrid(15),
+            //     y: utils.withGrid(9),
+            //     src: "img/personages/ghetsis.png",
+            //     behaviorLoop: [
+            //         { type: "stand", direction: "down", time: 1200},
+            //         { type: "stand", direction: "right", time: 1200},
+            //     ],
+            //     talking: [
+            //         {
+            //             events: [
+            //                 {type: "textMessage", text: "c'est l'heure du combat", faceHero:"npc1"},
+            //                 {type: "addStoryFlag", flag: "TALKED_TO_NPC1"}
+            //                 //{type: "battle", enemyId: "ghetsis"}
+            //             ]
+            //         }
+            //     ]
+            // },
             pokeball1: {
                 type: "PokeballStone",
                 x: utils.withGrid(19),
@@ -373,55 +363,228 @@ window.OverworldMaps = {
             },
             
         },
-        walls: {            
-            [utils.asGridCoord(11,19)] : true,           
+        walls: {           
+            // [utils.asGridCoord(23,27)] : true,        
         },
         battleZoneSpaces: {
-            [utils.asGridCoord(33,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
-            [utils.asGridCoord(32,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
-            [utils.asGridCoord(31,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
-            [utils.asGridCoord(30,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
-            [utils.asGridCoord(29,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
-            [utils.asGridCoord(28,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
-            [utils.asGridCoord(27,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
-            [utils.asGridCoord(26,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
-            [utils.asGridCoord(25,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
-            [utils.asGridCoord(24,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
-            [utils.asGridCoord(23,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
-            [utils.asGridCoord(22,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
-            [utils.asGridCoord(21,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
-            [utils.asGridCoord(20,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
-            [utils.asGridCoord(19,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
-            [utils.asGridCoord(18,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
-            [utils.asGridCoord(17,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
-            [utils.asGridCoord(16,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
-            [utils.asGridCoord(15,11)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(38,21)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(38,22)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(38,23)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(38,24)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },            
+            [utils.asGridCoord(38,25)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
 
+            [utils.asGridCoord(39,21)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(39,22)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(39,23)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(39,24)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },            
+            [utils.asGridCoord(39,25)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+
+            [utils.asGridCoord(40,21)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(40,22)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(40,23)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(40,24)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },            
+            [utils.asGridCoord(40,25)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },           
+            [utils.asGridCoord(40,26)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+
+            [utils.asGridCoord(41,21)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(41,22)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(41,23)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(41,24)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },            
+            [utils.asGridCoord(41,25)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },           
+            [utils.asGridCoord(41,26)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+
+            [utils.asGridCoord(42,21)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(42,22)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(42,23)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(42,24)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },            
+            [utils.asGridCoord(42,25)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },           
+            [utils.asGridCoord(42,26)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+
+            [utils.asGridCoord(43,21)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(43,22)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(43,23)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            [utils.asGridCoord(43,24)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },            
+            [utils.asGridCoord(43,25)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },           
+            [utils.asGridCoord(43,26)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+         
+            [utils.asGridCoord(44,25)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },           
+            [utils.asGridCoord(44,26)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+
+            [utils.asGridCoord(45,25)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },           
+            [utils.asGridCoord(45,26)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+
+            [utils.asGridCoord(46,25)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },           
+            [utils.asGridCoord(46,26)] : { events: [ {type: "battle", enemyId: "savageVille1"} ] },
+            
         },
         cutSceneSpaces: {
-            [utils.asGridCoord(11,20)] : [
+            //check if we got starter
+            [utils.asGridCoord(23,27)] : [
+                {
+                    required : ["Starter_GOT"],
+                    events: []
+                },
                 {
                     events: [
-                        {who: "npc1", type:"stand", direction: "left"},
-                        {type:"textMessage", text: "va voir le centre pokemon"},
+                        {type:"textMessage", text: "va voir le professeur"},
+                        {who: "hero", type:"walk", direction: "down"}
+                    ]
+                }    
+            ], 
+            [utils.asGridCoord(24,27)] : [
+                {
+                    required : ["Starter_GOT"],
+                    events: []
+                },
+                {
+                    events: [
+                        {type:"textMessage", text: "va voir le professeur"},
+                        {who: "hero", type:"walk", direction: "down"}
+                    ]
+                }    
+            ], 
+            [utils.asGridCoord(25,27)] : [
+                {
+                    required : ["Starter_GOT"],
+                    events: []
+                },
+                {
+                    events: [
+                        {type:"textMessage", text: "va voir le professeur"},
+                        {who: "hero", type:"walk", direction: "down"}
+                    ]
+                }    
+            ],  
+            [utils.asGridCoord(26,27)] : [
+                {
+                    required : ["Starter_GOT"],
+                    events: []
+                },
+                {
+                    events: [
+                        {type:"textMessage", text: "va voir le professeur"},
                         {who: "hero", type:"walk", direction: "down"}
                     ]
                 }    
             ],
-            [utils.asGridCoord(37,19)] : [
+            [utils.asGridCoord(27,27)] : [
+                {
+                    required : ["Starter_GOT"],
+                    events: []
+                },
+                {
+                    events: [
+                        {type:"textMessage", text: "va voir le professeur"},
+                        {who: "hero", type:"walk", direction: "down"}
+                    ]
+                }    
+            ], 
+            [utils.asGridCoord(28,27)] : [
+                {
+                    required : ["Starter_GOT"],
+                    events: []
+                },
+                {
+                    events: [
+                        {type:"textMessage", text: "va voir le professeur"},
+                        {who: "hero", type:"walk", direction: "down"}
+                    ]
+                }    
+            ],  
+            //change maps          
+            [utils.asGridCoord(17,35)] : [
                 {
                     events: [
                         {
                             type: "changeMap",
-                            map: "Centre_Pokemon",
-                            x:utils.withGrid(15),
-                            y:utils.withGrid(21),
+                            map: "ProfLab",
+                            x:utils.withGrid(9),
+                            y:utils.withGrid(16),
                             direction: "up"
-
                         },
                     ]
                 }
-            ]
+            ],
+            [utils.asGridCoord(43,35)] : [
+                {
+                    events: [
+                        {
+                            type: "changeMap",
+                            map: "ProfLab", //change with house
+                            x:utils.withGrid(9),
+                            y:utils.withGrid(16),
+                            direction: "up"
+                        },
+                    ]
+                }
+            ],
+            [utils.asGridCoord(17,44)] : [
+                {
+                    events: [
+                        {
+                            type: "changeMap",
+                            map: "ProfLab", //change with bottom left house
+                            x:utils.withGrid(9),
+                            y:utils.withGrid(16),
+                            direction: "up"
+                        },
+                    ]
+                }
+            ],
+            [utils.asGridCoord(30,33)] : [
+                {
+                    events: [
+                        {
+                            type: "changeMap",
+                            map: "ProfLab", //change with top right house
+                            x:utils.withGrid(9),
+                            y:utils.withGrid(16),
+                            direction: "up"
+                        },
+                    ]
+                }
+            ],
+            [utils.asGridCoord(33,41)] : [
+                {
+                    events: [
+                        {
+                            type: "changeMap",
+                            map: "ProfLab", //change with bottom right house
+                            x:utils.withGrid(9),
+                            y:utils.withGrid(16),
+                            direction: "up"
+                        },
+                    ]
+                }
+            ],
+            //battle
+            [utils.asGridCoord(15,22)] : [
+                {
+                    required : ["DEFEATED_NPC1"],
+                    events: []
+                },
+                {
+                    events: [
+                        {type: "textMessage", text: "c'est l'heure du combat"},
+                        {type: "battle", enemyId: "ghetsis"},
+                        {type: "addStoryFlag", flag: "DEFEATED_NPC1"},
+                    ]
+                }    
+            ],
+            [utils.asGridCoord(15,23)] : [
+                {
+                    required : ["DEFEATED_NPC1"],
+                    events: []
+                },
+                {
+                    events: [
+                        {type: "textMessage", text: "c'est l'heure du combat"},
+                        {type: "battle", enemyId: "ghetsis"},
+                        {type: "addStoryFlag", flag: "DEFEATED_NPC1"},
+                    ]
+                }    
+            ],
+
         }
 
     }

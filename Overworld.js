@@ -6,63 +6,77 @@ class Overworld {
         this.map = null;
     }
 
-    startGameLoop() {
+    gameLoopStepwork() {
         //img for walls
         let wallImg = new Image();
-        wallImg.src = "/img/orange.png"
+        wallImg.src = "/img/orange.png"         //comm when not display
         //img for battleZone
         let battleZoneImg = new Image();
-        battleZoneImg.src = "/img/purple.png"
+        battleZoneImg.src = "/img/purple.png"   //comm when not display
 
-        const step = () => {
+        //Clear off canvas before drawing new layers
+        this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height);
 
-            //Clear off canvas before drawing new layers
-            this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height);
+        //Establish the camera person
+        const cameraPerson = this.map.gameObjects.hero;
 
-            //Establish the camera person
-            const cameraPerson = this.map.gameObjects.hero;
+        //update all objects
+        Object.values(this.map.gameObjects).forEach(object => {
+            object.update( {
+                arrow: this.directionInput.direction,
+                map: this.map,
+            });
+        })
 
-            //update all objects
-            Object.values(this.map.gameObjects).forEach(object => {
-                object.update( {
-                    arrow: this.directionInput.direction,
-                    map: this.map,
-                });
-            })
+        //draw lower layer
+        this.map.drawLowerImage(this.ctx, cameraPerson);
 
-            //draw lower layer
-            this.map.drawLowerImage(this.ctx, cameraPerson);
+        //draw game objects
+        Object.values(this.map.gameObjects).sort((a,b) => {
+            return a.y-b.y;
+        }).forEach(object => {              
+            object.sprite.draw(this.ctx, cameraPerson);
+        })
+                   
+        //draw walls
+        Object.keys(this.map.walls).forEach(key => {
+            const [x, y] = key.split(',');                
+            this.ctx.drawImage( wallImg, x-cameraPerson.x+ utils.withGrid(10.5), y-cameraPerson.y+ utils.withGrid(6));
+        })
 
-            //draw game objects
-            Object.values(this.map.gameObjects).sort((a,b) => {
-                return a.y-b.y;
-            }).forEach(object => {              
-                object.sprite.draw(this.ctx, cameraPerson);
-            })
-                       
-            //draw walls
-            Object.keys(this.map.walls).forEach(key => {
-                const [x, y] = key.split(',');                
-                this.ctx.drawImage( wallImg, x-cameraPerson.x+ utils.withGrid(10.5), y-cameraPerson.y+ utils.withGrid(6));
-            })
+        //draw battlezoneSpaces
+        Object.keys(this.map.battleZoneSpaces).forEach(key => {
+            const [x, y] = key.split(',');
+            
+            this.ctx.drawImage( battleZoneImg, x-cameraPerson.x+ utils.withGrid(10.5), y-cameraPerson.y+ utils.withGrid(6));
+        })
 
-            //draw battlezoneSpaces
-            Object.keys(this.map.battleZoneSpaces).forEach(key => {
-                const [x, y] = key.split(',');
-                
-                this.ctx.drawImage( battleZoneImg, x-cameraPerson.x+ utils.withGrid(10.5), y-cameraPerson.y+ utils.withGrid(6));
-            })
+        //draw upper layer
+        this.map.drawUpperImage(this.ctx, cameraPerson);
+    }
 
-            //draw upper layer
-            this.map.drawUpperImage(this.ctx, cameraPerson);
-
-            if(!this.map.isPaused) {
-                requestAnimationFrame(() => {
-                    step();
-                })
+    startGameLoop() {
+        //refresh at a certain speed
+        let previousMs;
+        const step = 1/120;
+        const stepFn = (timestampMs) => {
+            if(this.map.isPaused) {
+                return;
             }
+            if(previousMs === undefined) {
+                previousMs = timestampMs;
+            } 
+            let delta = (timestampMs - previousMs) / 1000;
+            while(delta >= step) {
+                this.gameLoopStepwork();
+                delta -= step
+            }
+            previousMs = timestampMs - delta * 1000          
+
+            requestAnimationFrame(stepFn)
         }
-        step();
+        //first kickoff tick
+        requestAnimationFrame(stepFn)
     }
 
     bindActionInput() {
@@ -117,7 +131,11 @@ class Overworld {
         this.titleScreen = new Titlescreen({
             progress: this.progress
         })
-        const useSaveFile = /*null*/ await this.titleScreen.init(document.querySelector(".game-container"));
+
+        //test with loading sceen
+        //const useSaveFile = await this.titleScreen.init(document.querySelector(".game-container"));
+        //test without loading screen + change map in Progress.jssd
+        const useSaveFile = null
         
         //Potentially load saved data
         let initialHeroState = null;
@@ -144,22 +162,6 @@ class Overworld {
         this.startGameLoop();
 
         this.map.startCutScene([
-            
-            // { who: "hero", type: "walk", direction: "down"},
-            // { who: "npc1", type: "walk", direction: "down"},
-            // { who: "npc1", type: "walk", direction: "left"},
-            // { who: "npc1", type: "walk", direction: "left"},
-            // { who: "npc1", type: "walk", direction: "left"}, 
-            // { who: "npc1", type: "walk", direction: "left"},
-            // { who: "npc1", type: "walk", direction: "left"},
-            // { who: "npc1", type: "walk", direction: "left"},
-            // { who: "npc1", type: "walk", direction: "left"},
-            // { who: "npc1", type: "walk", direction: "left"},
-            // { who: "npc1", type: "walk", direction: "left"},
-            // { who: "npc1", type: "stand", direction: "down"},
-            //{type: "textMessage", text:"Maintenant c'est moi qui decide"}
-            //{type: "changeMap", map: "Centre_Pokemon"}
-            //{ type: "battle", enemyId: "ghetsis" }
         ])
     }
 
